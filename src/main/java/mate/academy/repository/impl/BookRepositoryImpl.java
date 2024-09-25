@@ -1,23 +1,19 @@
 package mate.academy.repository.impl;
 
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.model.Book;
 import mate.academy.repository.BookRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@RequiredArgsConstructor
 public class BookRepositoryImpl implements BookRepository {
     private final SessionFactory sessionFactory;
-
-    @Autowired
-    public BookRepositoryImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 
     @Override
     public Book save(Book book) {
