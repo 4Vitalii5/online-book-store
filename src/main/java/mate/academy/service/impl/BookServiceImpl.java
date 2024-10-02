@@ -4,7 +4,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.BookDto;
 import mate.academy.dto.CreateBookRequestDto;
-import mate.academy.exception.DuplicateResourceException;
 import mate.academy.exception.EntityNotFoundException;
 import mate.academy.mapper.BookMapper;
 import mate.academy.model.Book;
@@ -23,10 +22,6 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto save(CreateBookRequestDto requestDto) {
         Book book = bookMapper.toModel(requestDto);
-        if (bookRepository.existsByIsbn(book.getIsbn())) {
-            throw new DuplicateResourceException("Book with ISBN " + book.getIsbn()
-                    + " already exists");
-        }
         bookRepository.save(book);
         return bookMapper.toDto(book);
     }
@@ -47,22 +42,18 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto updateBookById(Long id, CreateBookRequestDto requestDto) {
         Book book = getBookById(id);
-        if (!book.getIsbn().equals(requestDto.isbn())) {
-            throw new DuplicateResourceException("Book with ISBN " + requestDto.isbn()
-                    + " already exists");
-        }
-        book.setTitle(requestDto.title());
-        book.setAuthor(requestDto.author());
-        book.setPrice(requestDto.price());
-        book.setIsbn(requestDto.isbn());
-        book.setDescription(requestDto.description());
-        book.setCoverImage(requestDto.coverImage());
+        Book updatedBook = bookMapper.toModel(requestDto);
+        book.setTitle(updatedBook.getTitle());
+        book.setAuthor(updatedBook.getAuthor());
+        book.setPrice(updatedBook.getPrice());
+        book.setIsbn(updatedBook.getIsbn());
+        book.setDescription(updatedBook.getDescription());
+        book.setCoverImage(updatedBook.getCoverImage());
         return bookMapper.toDto(bookRepository.save(book));
     }
 
     @Override
     public void deleteById(Long id) {
-        getBookById(id);
         bookRepository.deleteById(id);
     }
 
