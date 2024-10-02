@@ -21,19 +21,16 @@ public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
             spec = spec.and(specificationProviderManager.getSpecificationProvider("title")
                     .getSpecification(searchParameters.titles()));
         }
-
         if (searchParameters.authors() != null && searchParameters.authors().length > 0) {
             spec = spec.and(specificationProviderManager.getSpecificationProvider("author")
                     .getSpecification(searchParameters.authors()));
         }
-
         if (searchParameters.prices() != null && searchParameters.prices().length == 2) {
             BigDecimal minPrice = searchParameters.prices()[0];
             BigDecimal maxPrice = searchParameters.prices()[1];
             spec = spec.and((root, query, criteriaBuilder) ->
                     criteriaBuilder.between(root.get("price"), minPrice, maxPrice));
         }
-
         return spec;
     }
 }
