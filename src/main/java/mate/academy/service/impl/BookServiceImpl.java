@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import mate.academy.dto.BookDto;
 import mate.academy.dto.BookSearchParameters;
 import mate.academy.dto.CreateBookRequestDto;
+import mate.academy.exception.DuplicateResourceException;
 import mate.academy.exception.EntityNotFoundException;
 import mate.academy.mapper.BookMapper;
 import mate.academy.model.Book;
@@ -24,6 +25,10 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto save(CreateBookRequestDto requestDto) {
         Book book = bookMapper.toModel(requestDto);
+        if (bookRepository.existsByIsbn(book.getIsbn())) {
+            throw new DuplicateResourceException("Book with ISBN " + book.getIsbn()
+                    + " already exists");
+        }
         bookRepository.save(book);
         return bookMapper.toDto(book);
     }
@@ -44,8 +49,8 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto updateBookById(Long id, CreateBookRequestDto requestDto) {
         Book book = getBookById(id);
-        Book updatedBook = bookMapper.updateBookFromDto(requestDto, book);
-        return bookMapper.toDto(bookRepository.save(updatedBook));
+        bookMapper.updateBookFromDto(requestDto, book);
+        return bookMapper.toDto(bookRepository.save(book));
     }
 
     @Override
