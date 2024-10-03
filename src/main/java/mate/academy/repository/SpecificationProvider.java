@@ -2,8 +2,8 @@ package mate.academy.repository;
 
 import org.springframework.data.jpa.domain.Specification;
 
-public interface SpecificationProvider<T> {
+public interface SpecificationProvider<T, P> {
     String getKey();
 
-    Specification<T> getSpecification(String[] params);
+    Specification<T> getSpecification(P params);
 }
