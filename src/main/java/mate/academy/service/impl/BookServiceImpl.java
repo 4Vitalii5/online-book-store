@@ -10,7 +10,6 @@ import mate.academy.model.Book;
 import mate.academy.repository.BookRepository;
 import mate.academy.service.BookService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +17,6 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
 
-    @Transactional
     @Override
     public BookDto save(CreateBookRequestDto requestDto) {
         Book book = bookMapper.toModel(requestDto);
@@ -42,14 +40,8 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto updateBookById(Long id, CreateBookRequestDto requestDto) {
         Book book = getBookById(id);
-        Book updatedBook = bookMapper.toModel(requestDto);
-        book.setTitle(updatedBook.getTitle());
-        book.setAuthor(updatedBook.getAuthor());
-        book.setPrice(updatedBook.getPrice());
-        book.setIsbn(updatedBook.getIsbn());
-        book.setDescription(updatedBook.getDescription());
-        book.setCoverImage(updatedBook.getCoverImage());
-        return bookMapper.toDto(bookRepository.save(book));
+        Book updatedBook = bookMapper.updateBookFromDto(requestDto, book);
+        return bookMapper.toDto(bookRepository.save(updatedBook));
     }
 
     @Override
