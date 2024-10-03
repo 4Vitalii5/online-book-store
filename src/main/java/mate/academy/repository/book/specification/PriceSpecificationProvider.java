@@ -7,17 +7,23 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PriceSpecificationProvider implements SpecificationProvider<Book> {
+public class PriceSpecificationProvider implements SpecificationProvider<Book, BigDecimal[]> {
+    private static final String PRICE_FIELD = "price";
+
     @Override
     public String getKey() {
-        return "price";
+        return PRICE_FIELD;
     }
 
     @Override
-    public Specification<Book> getSpecification(String[] params) {
-        BigDecimal minPrice = new BigDecimal(params[0]);
-        BigDecimal maxPrice = new BigDecimal(params[1]);
+    public Specification<Book> getSpecification(BigDecimal[] params) {
+        if (params.length != 2) {
+            throw new IllegalArgumentException("Price range requires exactly two values: "
+                    + "min and max");
+        }
+        BigDecimal minPrice = params[0];
+        BigDecimal maxPrice = params[1];
         return (root, query, criteriaBuilder) ->
-                criteriaBuilder.between(root.get("price"), minPrice, maxPrice);
+                criteriaBuilder.between(root.get(PRICE_FIELD), minPrice, maxPrice);
     }
 }
