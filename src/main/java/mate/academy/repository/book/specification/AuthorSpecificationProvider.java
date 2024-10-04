@@ -7,7 +7,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AuthorSpecificationProvider implements SpecificationProvider<Book, String[]> {
+public class AuthorSpecificationProvider implements SpecificationProvider<Book> {
     private static final String AUTHOR_FIELD = "author";
 
     @Override
