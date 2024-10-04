@@ -11,14 +11,13 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class BookSpecificationProviderManager implements SpecificationProviderManager<Book> {
-    private final List<SpecificationProvider<Book, ?>> bookSpecificationProviders;
+    private final List<SpecificationProvider<Book>> bookSpecificationProviders;
 
     @Override
-    public <P> SpecificationProvider<Book, P> getSpecificationProvider(String key) {
+    public SpecificationProvider<Book> getSpecificationProvider(String key) {
         return bookSpecificationProviders.stream()
-                .filter(k -> k.getKey().equals(key))
+                .filter(provider -> provider.getKey().equals(key))
                 .findFirst()
-                .map(provider -> (SpecificationProvider<Book, P>) provider)
                 .orElseThrow(() ->
                         new NoSuchElementException(
                                 "Can't find correct specification provider for key: " + key)
