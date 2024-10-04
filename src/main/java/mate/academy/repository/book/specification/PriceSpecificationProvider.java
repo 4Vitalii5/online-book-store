@@ -1,5 +1,6 @@
 package mate.academy.repository.book.specification;
 
+import java.math.BigDecimal;
 import mate.academy.model.Book;
 import mate.academy.repository.SpecificationProvider;
 import org.springframework.data.jpa.domain.Specification;
@@ -20,8 +21,8 @@ public class PriceSpecificationProvider implements SpecificationProvider<Book> {
             throw new IllegalArgumentException("Price range requires exactly two values: "
                     + "min and max");
         }
-        String minPrice = params[0];
-        String maxPrice = params[1];
+        BigDecimal minPrice = new BigDecimal(params[0]);
+        BigDecimal maxPrice = new BigDecimal(params[1]);
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.between(root.get(PRICE_FIELD), minPrice, maxPrice);
     }
