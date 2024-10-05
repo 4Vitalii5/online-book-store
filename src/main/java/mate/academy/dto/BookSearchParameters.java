@@ -1,4 +1,11 @@
 package mate.academy.dto;
 
-public record BookSearchParameters(String[] titles, String[] authors, String[] prices) {
+import mate.academy.validation.ValidNumericStringArray;
+
+public record BookSearchParameters(
+        String[] titles,
+        String[] authors,
+        @ValidNumericStringArray
+        String[] prices
+) {
 }
