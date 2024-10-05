@@ -17,10 +17,6 @@ public class PriceSpecificationProvider implements SpecificationProvider<Book> {
 
     @Override
     public Specification<Book> getSpecification(String[] params) {
-        if (params.length != 2) {
-            throw new IllegalArgumentException("Price range requires exactly two values: "
-                    + "min and max");
-        }
         BigDecimal minPrice = new BigDecimal(params[0]);
         BigDecimal maxPrice = new BigDecimal(params[1]);
         return (root, query, criteriaBuilder) ->
