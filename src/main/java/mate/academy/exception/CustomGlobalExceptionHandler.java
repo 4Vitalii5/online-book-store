@@ -24,10 +24,10 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
             EntityNotFoundException exception, WebRequest request) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.NO_CONTENT);
+        body.put("status", HttpStatus.NOT_FOUND);
         body.put("message", exception.getMessage());
         body.put("path", request.getDescription(false));
-        return new ResponseEntity<>(body, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(DuplicateResourceException.class)
