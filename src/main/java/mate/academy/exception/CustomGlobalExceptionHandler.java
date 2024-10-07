@@ -22,22 +22,22 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFoundException(
             EntityNotFoundException exception, WebRequest request) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.NOT_FOUND);
-        body.put("message", exception.getMessage());
-        body.put("path", request.getDescription(false));
+        Map<String, Object> body = getBody(
+                exception.getMessage(),
+                request.getDescription(false),
+                HttpStatus.NOT_FOUND
+        );
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(DuplicateResourceException.class)
     protected ResponseEntity<Object> handleDuplicateResourceException(
             DuplicateResourceException exception, WebRequest request) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.CONFLICT);
-        body.put("message", exception.getMessage());
-        body.put("path", request.getDescription(false));
+        Map<String, Object> body = getBody(
+                exception.getMessage(),
+                request.getDescription(false),
+                HttpStatus.CONFLICT
+        );
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
@@ -66,5 +66,17 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
             return "%s : %s".formatted(field, message);
         }
         return error.getDefaultMessage();
+    }
+
+    private Map<String, Object> getBody(
+            String message,
+            String description,
+            HttpStatus httpStatus) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", httpStatus);
+        body.put("message", message);
+        body.put("path", description);
+        return body;
     }
 }
