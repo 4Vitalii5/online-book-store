@@ -28,7 +28,6 @@ public class Book {
     @NonNull
     private String author;
     @NonNull
-    @Column(unique = true)
     private String isbn;
     @NonNull
     private BigDecimal price;
