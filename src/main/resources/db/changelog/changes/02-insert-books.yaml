@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-books
+      author: Vitalii Pavlyk
+      changes:
+        - insert:
+            tableName: books
+            columns:
+              - column: { name: title, value: "Harry Potter" }
+              - column: { name: author, value: "J.K.Rowling" }
+              - column: { name: isbn, value: "9780596520681" }
+              - column: { name: price, value: 20.50 }
+              - column: { name: description, value: "Book description #1" }
+              - column: { name: cover_image, value: "http://example.com/cover1.jpg" }
+        - insert:
+            tableName: books
+            columns:
+              - column: { name: title, value: "The Perfect Shot" }
+              - column: { name: author, value: "Planet, Lonely" }
+              - column: { name: isbn, value: "9781838690434" }
+              - column: { name: price, value: 30.99 }
+              - column: { name: description, value: "Book description #2" }
+              - column: { name: cover_image, value: "https://shop.lonelyplanet.com/cdn/shop/products/9781838690434.jpg?v=1666176637&width=1500" }
+        - insert:
+            tableName: books
+            columns:
+              - column: { name: title, value: "Jane Eyre" }
+              - column: { name: author, value: "Charlotte Bronte" }
+              - column: { name: isbn, value: "9781838690438" }
+              - column: { name: price, value: 100.85 }
+              - column: { name: description, value: "Book description #3" }
+              - column: { name: cover_image, value: "http://example.com/cover4.jpg" }
