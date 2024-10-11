@@ -2,9 +2,9 @@ package mate.academy.service.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import mate.academy.dto.BookDto;
-import mate.academy.dto.BookSearchParameters;
-import mate.academy.dto.CreateBookRequestDto;
+import mate.academy.dto.book.BookDto;
+import mate.academy.dto.book.BookSearchParameters;
+import mate.academy.dto.book.CreateBookRequestDto;
 import mate.academy.exception.DuplicateResourceException;
 import mate.academy.exception.EntityNotFoundException;
 import mate.academy.mapper.BookMapper;
@@ -27,7 +27,8 @@ public class BookServiceImpl implements BookService {
     public BookDto save(CreateBookRequestDto requestDto) {
         Book book = bookMapper.toModel(requestDto);
         if (bookRepository.existsByIsbn(book.getIsbn())) {
-            throw new DuplicateResourceException("Book with ISBN " + book.getIsbn()
+            throw new DuplicateResourceException("Book with ISBN "
+                    + book.getIsbn()
                     + " already exists");
         }
         bookRepository.save(book);
@@ -50,8 +51,9 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto updateBookById(Long id, CreateBookRequestDto requestDto) {
         Book book = getBookById(id);
-        if (bookRepository.existsByIsbn(book.getIsbn())) {
-            throw new DuplicateResourceException("Book with ISBN " + book.getIsbn()
+        if (bookRepository.existsByIsbn(requestDto.isbn())
+                && !book.getIsbn().equals(requestDto.isbn())) {
+            throw new DuplicateResourceException("Book with ISBN " + requestDto.isbn()
                     + " already exists");
         }
         bookMapper.updateBookFromDto(requestDto, book);

@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-users
+      author: Vitalii Pavlyk
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: email, value: "vitalii@ukr.net" }
+              - column: { name: password, value: "1234" }
+              - column: { name: first_name, value: "Vitalii" }
+              - column: { name: last_name, value: "Stepanuk" }
+              - column: { name: shipping_address, value: "Lviv, Shevchenka street" }
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: email, value: "viktor@gmail.com" }
+              - column: { name: password, value: "4231234" }
+              - column: { name: first_name, value: "Viktor" }
+              - column: { name: last_name, value: "Shved" }
+              - column: { name: shipping_address, value: "Kyiv, L.Ukrainky street" }
