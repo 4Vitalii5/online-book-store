@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.user.UserRegistrationRequestDto;
 import mate.academy.dto.user.UserResponseDto;
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
                 () -> new RegistrationException("Role: " + DEFAULT_ROLE + " not found")
         );
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.getRoles().add(role);
+        user.setRoles(Set.of(role));
         userRepository.save(user);
         return userMapper.toUserResponse(user);
     }
