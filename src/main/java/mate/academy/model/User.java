@@ -31,19 +31,15 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     @Email
     private String email;
     @NotNull
     private String password;
     @NotNull
-    @Column(name = "first_name")
     private String firstName;
     @NotNull
-    @Column(name = "last_name")
     private String lastName;
-    @Column(name = "shipping_address")
     private String shippingAddress;
     @ManyToMany
     @JoinTable(
@@ -52,7 +48,6 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
-
     @Column(nullable = false)
     private boolean isDeleted = false;
 
