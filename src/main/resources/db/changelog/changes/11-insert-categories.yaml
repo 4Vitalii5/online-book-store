@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-categories
+      author: Vitalii Pavlyk
+      changes:
+        - insert:
+            tableName: categories
+            columns:
+              - column: {name: name, value: "Non-fiction"}
+              - column: {name: description, value: "Documentary books"}
+        - insert:
+            tableName: categories
+            columns:
+              - column: { name: name, value: "Prose" }
+              - column: { name: description, value: "Genre with no formal metrical structure" }
