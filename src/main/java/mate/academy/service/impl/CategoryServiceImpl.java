@@ -3,6 +3,7 @@ package mate.academy.service.impl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.category.CategoryDto;
+import mate.academy.dto.category.CreateCategoryRequestDto;
 import mate.academy.exception.DuplicateResourceException;
 import mate.academy.exception.EntityNotFoundException;
 import mate.academy.mapper.CategoryMapper;
@@ -19,7 +20,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryMapper categoryMapper;
 
     @Override
-    public CategoryDto save(CategoryDto requestDto) {
+    public CategoryDto save(CreateCategoryRequestDto requestDto) {
         Category category = categoryMapper.toEntity(requestDto);
         if (categoryRepository.findByName(category.getName()) != null) {
             throw new DuplicateResourceException("Category with name:"
@@ -44,14 +45,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDto update(Long id, CategoryDto categoryDto) {
+    public CategoryDto update(Long id, CreateCategoryRequestDto requestDto) {
         Category category = getCategoryById(id);
         if (!categoryRepository.findByName(category.getName()).getId().equals(id)) {
             throw new DuplicateResourceException("Category with name:"
                     + category.getName()
                     + " already exists");
         }
-        categoryMapper.updateCategoryFromDto(categoryDto, category);
+        categoryMapper.updateCategoryFromDto(requestDto, category);
         return categoryMapper.toDto(categoryRepository.save(category));
     }
 
