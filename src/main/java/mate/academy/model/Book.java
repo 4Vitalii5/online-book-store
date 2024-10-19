@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.SQLDelete;
@@ -30,13 +29,13 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NonNull
+    @Column(nullable = false)
     private String title;
-    @NonNull
+    @Column(nullable = false)
     private String author;
-    @NonNull
+    @Column(nullable = false)
     private String isbn;
-    @NonNull
+    @Column(nullable = false)
     private BigDecimal price;
     private String description;
     private String coverImage;
