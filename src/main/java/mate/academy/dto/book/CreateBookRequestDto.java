@@ -1,19 +1,21 @@
 package mate.academy.dto.book;
 
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 import mate.academy.validation.Isbn;
 
 public record CreateBookRequestDto(
-        @NotEmpty
+        @NotBlank
         String title,
-        @NotEmpty
+        @NotBlank
         String author,
         @Isbn
         String isbn,
-        @NotEmpty
+        @NotNull
         @Min(0)
         BigDecimal price,
         String description,
