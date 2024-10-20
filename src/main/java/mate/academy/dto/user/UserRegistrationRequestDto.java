@@ -2,9 +2,8 @@ package mate.academy.dto.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import mate.academy.validation.FieldMatch;
-import org.hibernate.validator.constraints.Length;
 
 @FieldMatch.List({
         @FieldMatch(
@@ -14,14 +13,14 @@ import org.hibernate.validator.constraints.Length;
         )
 })
 public record UserRegistrationRequestDto(
-        @NotEmpty
+        @NotBlank
         @Email
         String email,
-        @NotEmpty
-        @Length(min = 8, max = 20)
+        @NotBlank
+        @Size(min = 8, max = 20)
         String password,
         @NotBlank
-        @Length(min = 8, max = 20)
+        @Size(min = 8, max = 20)
         String repeatPassword,
         @NotBlank
         String firstName,
