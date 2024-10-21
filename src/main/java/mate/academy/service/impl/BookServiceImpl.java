@@ -100,8 +100,8 @@ public class BookServiceImpl implements BookService {
         );
     }
 
-    private Set<Category> getCategoriesByIds(List<Long> ids) {
-        return ids.stream()
+    private Set<Category> getCategoriesByIds(List<Long> categoryIds) {
+        return categoryIds.stream()
                 .map(categoryService::getById)
                 .map(categoryMapper::toEntity)
                 .collect(Collectors.toSet());
