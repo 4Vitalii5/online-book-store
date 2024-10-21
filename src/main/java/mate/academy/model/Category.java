@@ -2,8 +2,6 @@ package mate.academy.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,31 +10,20 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Getter
 @Setter
-@SQLDelete(sql = "UPDATE roles SET is_deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE categories SET is_deleted = true WHERE id=?")
 @SQLRestriction("is_deleted=false")
-@Table(name = "roles")
-public class Role implements GrantedAuthority {
+@Table(name = "categories")
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true)
-    @Enumerated(EnumType.STRING)
-    private RoleName role;
+    @Column(nullable = false)
+    private String name;
+    private String description;
     @Column(nullable = false)
     private boolean isDeleted = false;
-
-    @Override
-    public String getAuthority() {
-        return role.name();
-    }
-
-    public enum RoleName {
-        ROLE_ADMIN,
-        ROLE_USER
-    }
 }

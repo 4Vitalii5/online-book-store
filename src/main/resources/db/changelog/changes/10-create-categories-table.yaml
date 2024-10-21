@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: create-roles-table
+      id: create-categories-table
       author: Vitalii Pavlyk
       changes:
         - createTable:
-            tableName: roles
+            tableName: categories
             columns:
               - column:
                   name: id
@@ -14,11 +14,13 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: role
+                  name: name
                   type: varchar(255)
                   constraints:
                     nullable: false
-                    unique: true
+              - column:
+                  name: description
+                  type: varchar(255)
               - column:
                   name: is_deleted
                   type: bit
