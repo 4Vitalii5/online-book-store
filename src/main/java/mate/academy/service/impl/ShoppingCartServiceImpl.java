@@ -19,6 +19,7 @@ import mate.academy.service.ShoppingCartService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,19 +39,21 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCartDto getShoppingCart() {
-        ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(getCurrentUserId());
+        ShoppingCart shoppingCart = getShoppingCartByCurrentUser();
         return shoppingCartMapper.toDto(shoppingCart);
     }
 
     @Override
+    @Transactional
     public ShoppingCartDto addBookToShoppingCart(CreateCartItemRequestDto requestDto) {
-        ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(getCurrentUserId());
+        ShoppingCart shoppingCart = getShoppingCartByCurrentUser();
         addOrUpdateCartItem(requestDto, shoppingCart);
         shoppingCartRepository.save(shoppingCart);
         return shoppingCartMapper.toDto(shoppingCart);
     }
 
     @Override
+    @Transactional
     public ShoppingCartDto updateShoppingCart(Long cartItemId,
                                               UpdateCartItemDto updateCartItemDto) {
         ShoppingCart shoppingCart = getShoppingCartByCurrentUser();
