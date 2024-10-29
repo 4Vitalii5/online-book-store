@@ -21,8 +21,6 @@ import mate.academy.repository.order.OrderItemRepository;
 import mate.academy.repository.order.OrderRepository;
 import mate.academy.service.OrderService;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,8 +35,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderDto createOrder(CreateOrderRequestDto requestDto) {
-        ShoppingCart shoppingCart = getShoppingCartByCurrentUser();
+    public OrderDto createOrder(User user, CreateOrderRequestDto requestDto) {
+        ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(user.getId());
         if (shoppingCart.getCartItems().isEmpty()) {
             throw new EntityNotFoundException("Can't create order. CartItems is empty");
         }
@@ -49,8 +47,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> findAllOrders(Pageable pageable) {
-        Long userId = getCurrentUserId();
+    public List<OrderDto> findAllOrders(Long userId, Pageable pageable) {
         return orderRepository.findOrdersByUserId(userId, pageable).stream()
                 .map(orderMapper::toDto)
                 .toList();
@@ -71,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
         if (!orderRepository.existsById(orderId)) {
             throw new EntityNotFoundException("Can't find order with id:" + orderId);
         }
-        OrderItem orderItem = orderItemRepository.findByOrderIdAndId(orderId, itemId).orElseThrow(
+        OrderItem orderItem = orderItemRepository.findByIdAndOrderId(itemId, orderId).orElseThrow(
                 () -> new EntityNotFoundException("Can't find item with id:" + itemId)
         );
         return orderItemMapper.toDto(orderItem);
@@ -88,17 +85,6 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.toDto(order);
     }
 
-    private Long getCurrentUserId() {
-        UserDetails principal = (UserDetails) SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal();
-        return ((User) principal).getId();
-    }
-
-    private ShoppingCart getShoppingCartByCurrentUser() {
-        return shoppingCartRepository.findByUserId(getCurrentUserId());
-    }
-
     private void clearShoppingCart(ShoppingCart shoppingCart) {
         shoppingCart.getCartItems().clear();
         shoppingCartRepository.save(shoppingCart);
@@ -112,7 +98,8 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderDate(LocalDateTime.now());
         order.setShippingAddress(requestDto.shippingAddress());
         List<OrderItem> orderItems = shoppingCart.getCartItems().stream()
-                .map(cartItem -> orderItemMapper.toOrderItem(cartItem, order))
+                .map(orderItemMapper::toOrderItem)
+                .peek(orderItem -> orderItem.setOrder(order))
                 .toList();
         order.setOrderItems(new HashSet<>(orderItems));
         return order;
