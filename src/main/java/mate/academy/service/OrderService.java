@@ -5,13 +5,14 @@ import mate.academy.dto.order.CreateOrderRequestDto;
 import mate.academy.dto.order.OrderDto;
 import mate.academy.dto.order.OrderItemDto;
 import mate.academy.dto.order.UpdateOrderRequestDto;
+import mate.academy.model.User;
 import org.springframework.data.domain.Pageable;
 
 public interface OrderService {
 
-    OrderDto createOrder(CreateOrderRequestDto requestDto);
+    OrderDto createOrder(User user, CreateOrderRequestDto requestDto);
 
-    List<OrderDto> findAllOrders(Pageable pageable);
+    List<OrderDto> findAllOrders(Long userId, Pageable pageable);
 
     List<OrderItemDto> findOrderItems(Long orderId, Pageable pageable);
 
