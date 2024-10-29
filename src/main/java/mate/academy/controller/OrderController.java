@@ -9,15 +9,19 @@ import mate.academy.dto.order.CreateOrderRequestDto;
 import mate.academy.dto.order.OrderDto;
 import mate.academy.dto.order.OrderItemDto;
 import mate.academy.dto.order.UpdateOrderRequestDto;
+import mate.academy.model.User;
 import mate.academy.service.OrderService;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Order management", description = "Endpoints for managing order")
@@ -28,17 +32,21 @@ public class OrderController {
     private final OrderService orderService;
 
     @PreAuthorize("hasRole('ROLE_USER')")
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     @Operation(summary = "Place an order", description = "Make an order")
-    public OrderDto addOrder(@RequestBody @Valid CreateOrderRequestDto requestDto) {
-        return orderService.createOrder(requestDto);
+    public OrderDto addOrder(Authentication authentication,
+                             @RequestBody @Valid CreateOrderRequestDto requestDto) {
+        User user = (User) authentication.getPrincipal();
+        return orderService.createOrder(user, requestDto);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     @Operation(summary = "Get all orders", description = "Retrieve user's order history")
-    public List<OrderDto> getOrders(Pageable pageable) {
-        return orderService.findAllOrders(pageable);
+    public List<OrderDto> getOrders(Authentication authentication, Pageable pageable) {
+        User user = (User) authentication.getPrincipal();
+        return orderService.findAllOrders(user.getId(), pageable);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
