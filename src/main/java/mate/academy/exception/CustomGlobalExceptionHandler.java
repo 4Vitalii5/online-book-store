@@ -20,6 +20,17 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @ExceptionHandler(OrderProcessingException.class)
+    protected ResponseEntity<Object> handleOrderProcessingException(
+            OrderProcessingException exception, WebRequest request) {
+        Map<String, Object> body = getBody(
+                exception.getMessage(),
+                request.getDescription(false),
+                HttpStatus.BAD_REQUEST
+        );
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(JwtException.class)
     protected ResponseEntity<Object> handleJwtException(
             JwtException exception, WebRequest request) {
