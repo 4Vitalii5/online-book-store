@@ -31,4 +31,4 @@ services:
       "spring.datasource.username": "${MYSQLDB_USER}",
       "spring.datasource.password": "${MYSQLDB_ROOT_PASSWORD}"
       }'
-      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:${DEBUG_PORT}"
