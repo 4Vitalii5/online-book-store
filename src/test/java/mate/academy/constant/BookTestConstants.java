@@ -10,7 +10,7 @@ public class BookTestConstants {
     public static final String NEW_BOOK_TITLE = "New Book";
     public static final String NEW_BOOK_AUTHOR = "Jane Doe";
     public static final String NEW_BOOK_ISBN = "978-3-16-148410-0";
-    public static final BigDecimal NEW_BOOK_PRICE = new BigDecimal("19.99");
+    public static final BigDecimal NEW_BOOK_PRICE = BigDecimal.valueOf(19.99);
     public static final String NEW_BOOK_DESCRIPTION = "A fascinating book";
     public static final String NEW_BOOK_COVER_IMAGE = "coverImage.jpg";
     public static final List<Long> NEW_BOOK_CATEGORY_IDS = List.of(1L, 2L);
