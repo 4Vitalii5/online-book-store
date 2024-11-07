@@ -121,10 +121,8 @@ public class TestUtil {
     //Category request dto
     public static final CreateCategoryRequestDto CREATE_CATEGORY_REQUEST_DTO =
             new CreateCategoryRequestDto(NEW_CATEGORY_NAME, NEW_CATEGORY_DESCRIPTION);
-
     public static final CreateCategoryRequestDto UPDATE_CATEGORY_REQUEST_DTO =
             new CreateCategoryRequestDto(SECOND_CATEGORY_NAME, SECOND_CATEGORY_DESCRIPTION);
-
     public static final BookSearchParameters SEARCH_PARAMETERS = new BookSearchParameters(
             new String[]{SEARCH_TITLE}, new String[]{SEARCH_AUTHOR},
             new String[]{SEARCH_PRICE_MIN, SEARCH_PRICE_MAX}

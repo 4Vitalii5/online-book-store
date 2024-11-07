@@ -69,11 +69,9 @@ public class CategoryControllerTest {
         MvcResult mvcResult = mockMvc.perform(get("/categories"))
                 .andExpect(status().isOk())
                 .andReturn();
-
         // Then
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         CategoryDto[] responseDtos = objectMapper.readValue(jsonResponse, CategoryDto[].class);
-
         assertThat(responseDtos).isNotEmpty();
     }
 
@@ -85,11 +83,9 @@ public class CategoryControllerTest {
         MvcResult mvcResult = mockMvc.perform(get("/categories/{id}", FIRST_CATEGORY.getId()))
                 .andExpect(status().isOk())
                 .andReturn();
-
         // Then
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         CategoryDto responseDto = objectMapper.readValue(jsonResponse, CategoryDto.class);
-
         assertThat(responseDto).isNotNull();
         assertThat(responseDto.id()).isEqualTo(FIRST_CATEGORY.getId());
     }
@@ -105,11 +101,9 @@ public class CategoryControllerTest {
                         .content(objectMapper.writeValueAsString(UPDATE_CATEGORY_REQUEST_DTO)))
                 .andExpect(status().isOk())
                 .andReturn();
-
         // Then
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         CategoryDto responseDto = objectMapper.readValue(jsonResponse, CategoryDto.class);
-
         assertThat(responseDto).isNotNull();
         assertThat(responseDto.name()).isEqualTo(UPDATE_CATEGORY_REQUEST_DTO.name());
     }
@@ -122,7 +116,6 @@ public class CategoryControllerTest {
         mockMvc.perform(delete("/categories/{id}", FIRST_CATEGORY.getId())
                         .with(csrf()))
                 .andExpect(status().isNoContent());
-
         // Then
         mockMvc.perform(get("/categories/{id}", FIRST_CATEGORY.getId()))
                 .andExpect(status().isNotFound());
@@ -137,13 +130,11 @@ public class CategoryControllerTest {
                         FIRST_CATEGORY.getId()))
                 .andExpect(status().isOk())
                 .andReturn();
-
         // Then
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         BookDtoWithoutCategoryIds[] responseDtos = objectMapper.readValue(
                 jsonResponse, BookDtoWithoutCategoryIds[].class
         );
-
         assertThat(responseDtos).isNotEmpty();
     }
 }

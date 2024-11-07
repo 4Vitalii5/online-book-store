@@ -209,7 +209,6 @@ class BookServiceImplTest {
         //Then
         assertThat(actual).hasSize(1);
         assertThat(actual.get(FIRST_RECORD)).isEqualTo(SAMPLE_BOOK_DTO);
-
         verify(bookSpecificationBuilder, atLeastOnce()).build(SEARCH_PARAMETERS);
         verify(bookRepository, times(1)).findAll(specification, PAGEABLE);
         verify(bookMapper, times(1)).toDto(SAMPLE_BOOK);
@@ -231,7 +230,6 @@ class BookServiceImplTest {
         //Then
         assertThat(bookDtos).hasSize(1);
         assertThat(bookDtos.get(0)).isEqualTo(BOOK_DTO_WITHOUT_CATEGORY_IDS);
-
         verify(bookRepository, times(1))
                 .findAllByCategories_Id(FIRST_CATEGORY.getId(), PAGEABLE);
         verify(bookMapper, times(1)).toDtoWithoutCategories(SAMPLE_BOOK);
@@ -251,7 +249,6 @@ class BookServiceImplTest {
         String actual = exception.getMessage();
         //Then
         assertThat(actual).isEqualTo(expected);
-
         verify(categoryService, times(1)).getById(FIRST_CATEGORY.getId());
         verifyNoMoreInteractions(bookRepository, bookMapper, categoryService);
     }
