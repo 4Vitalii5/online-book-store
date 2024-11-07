@@ -86,7 +86,6 @@ class BookServiceImplTest {
     void save_duplicateIsbn_throwsDuplicateResourceException() {
         //Given
         String expected = String.format(DUPLICATE_ISBN_MESSAGE, CREATE_BOOK_REQUEST_DTO.isbn());
-
         when(bookMapper.toEntity(CREATE_BOOK_REQUEST_DTO)).thenReturn(NEW_BOOK);
         when(bookRepository.existsByIsbn(NEW_BOOK.getIsbn())).thenReturn(true);
         //When
@@ -174,7 +173,6 @@ class BookServiceImplTest {
     void updateBookById_duplicatedIsbn_throwsDuplicatedSourceException() {
         //Given
         String expected = String.format(DUPLICATE_ISBN_MESSAGE, UPDATE_BOOK_REQUEST_DTO.isbn());
-
         when(bookRepository.findById(SAMPLE_BOOK_ID)).thenReturn(Optional.of(SAMPLE_BOOK));
         when(bookRepository.existsByIsbn(UPDATE_BOOK_REQUEST_DTO.isbn())).thenReturn(true);
         //When
