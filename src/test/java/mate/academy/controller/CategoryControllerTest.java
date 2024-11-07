@@ -1,9 +1,9 @@
 package mate.academy.controller;
 
-import static mate.academy.constant.TestConstants.CONTENT_TYPE_JSON;
-import static mate.academy.constant.TestUtil.CREATE_CATEGORY_REQUEST_DTO;
-import static mate.academy.constant.TestUtil.FIRST_CATEGORY;
-import static mate.academy.constant.TestUtil.UPDATE_CATEGORY_REQUEST_DTO;
+import static mate.academy.util.TestConstants.CONTENT_TYPE_JSON;
+import static mate.academy.util.TestUtil.CREATE_CATEGORY_REQUEST_DTO;
+import static mate.academy.util.TestUtil.FIRST_CATEGORY;
+import static mate.academy.util.TestUtil.UPDATE_CATEGORY_REQUEST_DTO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;

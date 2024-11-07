@@ -1,7 +1,7 @@
 package mate.academy.repository.category;
 
-import static mate.academy.constant.TestConstants.INVALID_CATEGORY_NAME;
-import static mate.academy.constant.TestUtil.FIRST_CATEGORY;
+import static mate.academy.util.TestConstants.INVALID_CATEGORY_NAME;
+import static mate.academy.util.TestUtil.FIRST_CATEGORY;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import mate.academy.model.Category;

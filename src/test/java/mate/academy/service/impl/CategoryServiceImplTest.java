@@ -1,15 +1,15 @@
 package mate.academy.service.impl;
 
-import static mate.academy.constant.TestConstants.CATEGORY_NOT_FOUND_MESSAGE;
-import static mate.academy.constant.TestConstants.DUPLICATE_NAME_MESSAGE;
-import static mate.academy.constant.TestUtil.CATEGORY_DTO;
-import static mate.academy.constant.TestUtil.CATEGORY_PAGE;
-import static mate.academy.constant.TestUtil.CREATE_CATEGORY_REQUEST_DTO;
-import static mate.academy.constant.TestUtil.FIRST_CATEGORY;
-import static mate.academy.constant.TestUtil.PAGEABLE;
-import static mate.academy.constant.TestUtil.SECOND_CATEGORY;
-import static mate.academy.constant.TestUtil.UPDATED_CATEGORY_DTO;
-import static mate.academy.constant.TestUtil.UPDATE_CATEGORY_REQUEST_DTO;
+import static mate.academy.util.TestConstants.CATEGORY_NOT_FOUND_MESSAGE;
+import static mate.academy.util.TestConstants.DUPLICATE_NAME_MESSAGE;
+import static mate.academy.util.TestUtil.CATEGORY_DTO;
+import static mate.academy.util.TestUtil.CATEGORY_PAGE;
+import static mate.academy.util.TestUtil.CREATE_CATEGORY_REQUEST_DTO;
+import static mate.academy.util.TestUtil.FIRST_CATEGORY;
+import static mate.academy.util.TestUtil.PAGEABLE;
+import static mate.academy.util.TestUtil.SECOND_CATEGORY;
+import static mate.academy.util.TestUtil.UPDATED_CATEGORY_DTO;
+import static mate.academy.util.TestUtil.UPDATE_CATEGORY_REQUEST_DTO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doNothing;

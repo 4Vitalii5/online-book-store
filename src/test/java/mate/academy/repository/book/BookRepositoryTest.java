@@ -1,17 +1,17 @@
 package mate.academy.repository.book;
 
-import static mate.academy.constant.TestConstants.FIRST_RECORD;
-import static mate.academy.constant.TestConstants.SAMPLE_BOOK_ISBN;
-import static mate.academy.constant.TestConstants.SAMPLE_BOOK_TITLE;
-import static mate.academy.constant.TestConstants.SEARCH_AUTHOR;
-import static mate.academy.constant.TestConstants.SEARCH_PAGE_NUMBER;
-import static mate.academy.constant.TestConstants.SEARCH_PAGE_SIZE;
-import static mate.academy.constant.TestConstants.SEARCH_TITLE;
-import static mate.academy.constant.TestConstants.VALID_FIRST_BOOK_ID;
-import static mate.academy.constant.TestConstants.VALID_SECOND_BOOK_ID;
-import static mate.academy.constant.TestUtil.NEW_BOOK;
-import static mate.academy.constant.TestUtil.PAGEABLE;
-import static mate.academy.constant.TestUtil.SPECIFICATION;
+import static mate.academy.util.TestConstants.FIRST_RECORD;
+import static mate.academy.util.TestConstants.SAMPLE_BOOK_ISBN;
+import static mate.academy.util.TestConstants.SAMPLE_BOOK_TITLE;
+import static mate.academy.util.TestConstants.SEARCH_AUTHOR;
+import static mate.academy.util.TestConstants.SEARCH_PAGE_NUMBER;
+import static mate.academy.util.TestConstants.SEARCH_PAGE_SIZE;
+import static mate.academy.util.TestConstants.SEARCH_TITLE;
+import static mate.academy.util.TestConstants.VALID_FIRST_BOOK_ID;
+import static mate.academy.util.TestConstants.VALID_SECOND_BOOK_ID;
+import static mate.academy.util.TestUtil.NEW_BOOK;
+import static mate.academy.util.TestUtil.PAGEABLE;
+import static mate.academy.util.TestUtil.SPECIFICATION;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;

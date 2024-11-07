@@ -1,16 +1,16 @@
 package mate.academy.controller;
 
-import static mate.academy.constant.TestConstants.SEARCH_AUTHOR;
-import static mate.academy.constant.TestConstants.SEARCH_PARAM_AUTHORS;
-import static mate.academy.constant.TestConstants.SEARCH_PARAM_PRICES;
-import static mate.academy.constant.TestConstants.SEARCH_PARAM_TITLES;
-import static mate.academy.constant.TestConstants.SEARCH_PRICE_MAX;
-import static mate.academy.constant.TestConstants.SEARCH_PRICE_MIN;
-import static mate.academy.constant.TestConstants.SEARCH_TITLE;
-import static mate.academy.constant.TestConstants.VALID_FIRST_BOOK_ID;
-import static mate.academy.constant.TestConstants.VALID_SECOND_BOOK_ID;
-import static mate.academy.constant.TestUtil.CREATE_BOOK_REQUEST_DTO;
-import static mate.academy.constant.TestUtil.UPDATE_BOOK_REQUEST_DTO;
+import static mate.academy.util.TestConstants.SEARCH_AUTHOR;
+import static mate.academy.util.TestConstants.SEARCH_PARAM_AUTHORS;
+import static mate.academy.util.TestConstants.SEARCH_PARAM_PRICES;
+import static mate.academy.util.TestConstants.SEARCH_PARAM_TITLES;
+import static mate.academy.util.TestConstants.SEARCH_PRICE_MAX;
+import static mate.academy.util.TestConstants.SEARCH_PRICE_MIN;
+import static mate.academy.util.TestConstants.SEARCH_TITLE;
+import static mate.academy.util.TestConstants.VALID_FIRST_BOOK_ID;
+import static mate.academy.util.TestConstants.VALID_SECOND_BOOK_ID;
+import static mate.academy.util.TestUtil.CREATE_BOOK_REQUEST_DTO;
+import static mate.academy.util.TestUtil.UPDATE_BOOK_REQUEST_DTO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
