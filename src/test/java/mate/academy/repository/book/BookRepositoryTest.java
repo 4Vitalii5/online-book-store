@@ -45,10 +45,8 @@ class BookRepositoryTest {
     @Test
     @DisplayName("Verify save() method works")
     void save_validBook_returnsBook() {
-        // Given
         // When
         Book savedBook = bookRepository.save(NEW_BOOK);
-
         // Then
         assertThat(savedBook).isNotNull();
         assertThat(savedBook.getId()).isNotNull();
