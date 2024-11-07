@@ -47,7 +47,6 @@ public class CategoryControllerTest {
     @DisplayName("Verify creation of new category")
     @WithMockUser(roles = "ADMIN")
     void createCategory_withValidInput_returnsCreatedCategory() throws Exception {
-        // Given
         // When
         MvcResult mvcResult = mockMvc.perform(post("/categories")
                         .with(csrf())
@@ -99,7 +98,6 @@ public class CategoryControllerTest {
     @DisplayName("Update category by id")
     @WithMockUser(roles = "ADMIN")
     void updateCategory_withValidId_returnsUpdatedCategory() throws Exception {
-        // Given
         // When
         MvcResult mvcResult = mockMvc.perform(put("/categories/{id}", FIRST_CATEGORY.getId())
                         .with(csrf())
