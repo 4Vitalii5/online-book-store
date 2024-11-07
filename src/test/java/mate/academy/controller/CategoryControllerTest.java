@@ -1,11 +1,9 @@
 package mate.academy.controller;
 
-import static mate.academy.constant.CategoryTestConstants.CATEGORY_ID;
-import static mate.academy.constant.CategoryTestConstants.CONTENT_TYPE_JSON;
-import static mate.academy.constant.CategoryTestConstants.SECOND_CATEGORY_DESCRIPTION;
-import static mate.academy.constant.CategoryTestConstants.SECOND_CATEGORY_NAME;
-import static mate.academy.constant.CategoryTestConstants.UPDATED_CATEGORY_DESCRIPTION;
-import static mate.academy.constant.CategoryTestConstants.UPDATED_CATEGORY_NAME;
+import static mate.academy.constant.TestConstants.CONTENT_TYPE_JSON;
+import static mate.academy.constant.TestUtil.CREATE_CATEGORY_REQUEST_DTO;
+import static mate.academy.constant.TestUtil.FIRST_CATEGORY;
+import static mate.academy.constant.TestUtil.UPDATE_CATEGORY_REQUEST_DTO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -17,7 +15,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import mate.academy.dto.book.BookDtoWithoutCategoryIds;
 import mate.academy.dto.category.CategoryDto;
-import mate.academy.dto.category.CreateCategoryRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +27,16 @@ import org.springframework.test.web.servlet.MvcResult;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Sql(scripts = "classpath:database/clean-database.sql",
-        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+@Sql(scripts = "classpath:database/clean-database.sql")
+@Sql(scripts = {
+        "classpath:database/books/add-books.sql",
+        "classpath:database/categories/add-categories.sql",
+        "classpath:database/books-categories/set-books-to-categories.sql"
+}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = {
+        "classpath:database/books/remove-books.sql",
+        "classpath:database/categories/remove-categories.sql"
+}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class CategoryControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -41,39 +46,25 @@ public class CategoryControllerTest {
     @Test
     @DisplayName("Verify creation of new category")
     @WithMockUser(roles = "ADMIN")
-    @Sql(scripts = "classpath:database/categories/add-categories.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/categories/remove-categories.sql",
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void createCategory_withValidInput_returnsCreatedCategory() throws Exception {
-        //Given
-        CreateCategoryRequestDto requestDto = new CreateCategoryRequestDto(
-                SECOND_CATEGORY_NAME,
-                SECOND_CATEGORY_DESCRIPTION
-        );
-
-        //When
+        // Given
+        // When
         MvcResult mvcResult = mockMvc.perform(post("/categories")
                         .with(csrf())
                         .contentType(CONTENT_TYPE_JSON)
-                        .content(objectMapper.writeValueAsString(requestDto)))
+                        .content(objectMapper.writeValueAsString(CREATE_CATEGORY_REQUEST_DTO)))
                 .andExpect(status().isOk())
                 .andReturn();
-
-        //Then
+        // Then
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         CategoryDto responseDto = objectMapper.readValue(jsonResponse, CategoryDto.class);
         assertThat(responseDto).isNotNull();
-        assertThat(responseDto.name()).isEqualTo(SECOND_CATEGORY_NAME);
+        assertThat(responseDto.name()).isEqualTo(CREATE_CATEGORY_REQUEST_DTO.name());
     }
 
     @Test
     @DisplayName("Get all categories")
     @WithMockUser(roles = {"USER", "ADMIN"})
-    @Sql(scripts = "classpath:database/categories/add-categories.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/categories/remove-categories.sql",
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getAllCategories_withValidRequest_returnsCategories() throws Exception {
         // When
         MvcResult mvcResult = mockMvc.perform(get("/categories"))
@@ -90,13 +81,9 @@ public class CategoryControllerTest {
     @Test
     @DisplayName("Get category by id")
     @WithMockUser(roles = {"USER", "ADMIN"})
-    @Sql(scripts = "classpath:database/categories/add-categories.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/categories/remove-categories.sql",
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getCategoryById_withValidId_returnsCategory() throws Exception {
         // When
-        MvcResult mvcResult = mockMvc.perform(get("/categories/{id}", CATEGORY_ID))
+        MvcResult mvcResult = mockMvc.perform(get("/categories/{id}", FIRST_CATEGORY.getId()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -105,27 +92,19 @@ public class CategoryControllerTest {
         CategoryDto responseDto = objectMapper.readValue(jsonResponse, CategoryDto.class);
 
         assertThat(responseDto).isNotNull();
-        assertThat(responseDto.id()).isEqualTo(1L);
+        assertThat(responseDto.id()).isEqualTo(FIRST_CATEGORY.getId());
     }
 
     @Test
     @DisplayName("Update category by id")
     @WithMockUser(roles = "ADMIN")
-    @Sql(scripts = "classpath:database/categories/add-categories.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/categories/remove-categories.sql",
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void updateCategory_withValidId_returnsUpdatedCategory() throws Exception {
         // Given
-        CreateCategoryRequestDto requestDto = new CreateCategoryRequestDto(
-                UPDATED_CATEGORY_NAME, UPDATED_CATEGORY_DESCRIPTION
-        );
-
         // When
-        MvcResult mvcResult = mockMvc.perform(put("/categories/{id}", CATEGORY_ID)
+        MvcResult mvcResult = mockMvc.perform(put("/categories/{id}", FIRST_CATEGORY.getId())
                         .with(csrf())
                         .contentType(CONTENT_TYPE_JSON)
-                        .content(objectMapper.writeValueAsString(requestDto)))
+                        .content(objectMapper.writeValueAsString(UPDATE_CATEGORY_REQUEST_DTO)))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -134,42 +113,30 @@ public class CategoryControllerTest {
         CategoryDto responseDto = objectMapper.readValue(jsonResponse, CategoryDto.class);
 
         assertThat(responseDto).isNotNull();
-        assertThat(responseDto.name()).isEqualTo(UPDATED_CATEGORY_NAME);
+        assertThat(responseDto.name()).isEqualTo(UPDATE_CATEGORY_REQUEST_DTO.name());
     }
 
     @Test
     @DisplayName("Delete category by id")
     @WithMockUser(roles = "ADMIN")
-    @Sql(scripts = "classpath:database/categories/add-categories.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/categories/remove-categories.sql",
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void deleteCategory_withValidId_deletesCategory() throws Exception {
         // When
-        mockMvc.perform(delete("/categories/{id}", CATEGORY_ID)
+        mockMvc.perform(delete("/categories/{id}", FIRST_CATEGORY.getId())
                         .with(csrf()))
                 .andExpect(status().isNoContent());
 
         // Then
-        mockMvc.perform(get("/categories/{id}", CATEGORY_ID))
+        mockMvc.perform(get("/categories/{id}", FIRST_CATEGORY.getId()))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     @DisplayName("Get books by category id")
     @WithMockUser(roles = {"USER", "ADMIN"})
-    @Sql(scripts = {
-            "classpath:database/books/add-books.sql",
-            "classpath:database/categories/add-categories.sql",
-            "classpath:database/books-categories/set-books-to-categories.sql"
-    }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {
-            "classpath:database/books/remove-books.sql",
-            "classpath:database/categories/remove-categories.sql"
-    }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getBooksByCategoryId_withValidId_returnsBooks() throws Exception {
         // When
-        MvcResult mvcResult = mockMvc.perform(get("/categories/{id}/books", CATEGORY_ID))
+        MvcResult mvcResult = mockMvc.perform(get("/categories/{id}/books",
+                        FIRST_CATEGORY.getId()))
                 .andExpect(status().isOk())
                 .andReturn();
 
