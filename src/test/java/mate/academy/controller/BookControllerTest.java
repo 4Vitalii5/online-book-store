@@ -53,7 +53,6 @@ public class BookControllerTest {
     @DisplayName("Verify creation of new book")
     @WithMockUser(roles = "ADMIN")
     void createBook_withValidInput_returnsCreatedBook() throws Exception {
-        // Given
         // When
         MvcResult mvcResult = mockMvc.perform(post("/books")
                         .with(csrf())
@@ -101,7 +100,6 @@ public class BookControllerTest {
     @DisplayName("Update book by id")
     @WithMockUser(roles = "ADMIN")
     void updateBook_withValidId_returnsUpdatedBook() throws Exception {
-        // Given
         // When
         MvcResult mvcResult = mockMvc.perform(put("/books/{id}", VALID_SECOND_BOOK_ID)
                         .with(csrf())
@@ -133,7 +131,6 @@ public class BookControllerTest {
     @DisplayName("Search books by parameters")
     @WithMockUser(roles = {"USER", "ADMIN"})
     void searchBooks_withValidParameters_returnsBooks() throws Exception {
-        // Given
         // When
         MvcResult mvcResult = mockMvc.perform(get("/books/search")
                         .param(SEARCH_PARAM_TITLES, SEARCH_TITLE)
