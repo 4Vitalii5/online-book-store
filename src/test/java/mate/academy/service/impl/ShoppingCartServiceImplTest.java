@@ -7,6 +7,7 @@ import static mate.academy.util.TestConstants.ITEM_ID;
 import static mate.academy.util.TestConstants.USER_ID;
 import static mate.academy.util.TestUtil.BOOK;
 import static mate.academy.util.TestUtil.CART_ITEM;
+import static mate.academy.util.TestUtil.CART_ITEMS;
 import static mate.academy.util.TestUtil.CREATE_CART_ITEM_REQUEST_DTO;
 import static mate.academy.util.TestUtil.NEW_USER;
 import static mate.academy.util.TestUtil.SECOND_CART_ITEM;
@@ -22,7 +23,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import mate.academy.dto.cart.ShoppingCartDto;
@@ -30,7 +30,6 @@ import mate.academy.dto.item.CartItemResponseDto;
 import mate.academy.exception.EntityNotFoundException;
 import mate.academy.mapper.CartItemMapper;
 import mate.academy.mapper.ShoppingCartMapper;
-import mate.academy.model.CartItem;
 import mate.academy.model.ShoppingCart;
 import mate.academy.repository.book.BookRepository;
 import mate.academy.repository.cart.ShoppingCartRepository;
@@ -66,10 +65,7 @@ class ShoppingCartServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        Set<CartItem> cartItems = new HashSet<>();
-        cartItems.add(CART_ITEM);
-        cartItems.add(SECOND_CART_ITEM);
-        SHOPPING_CART.setCartItems(cartItems);
+        SHOPPING_CART.setCartItems(CART_ITEMS);
     }
 
     @Test
