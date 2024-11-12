@@ -59,7 +59,6 @@ import static mate.academy.util.TestConstants.USER_PASSWORD;
 import static mate.academy.util.TestConstants.USER_SHIPPING_ADDRESS;
 import static mate.academy.util.TestConstants.VALID_USER_EMAIL;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import mate.academy.dto.book.BookDto;
@@ -306,13 +305,6 @@ public class TestUtil {
     //AuthenticationController
     public static final UserLoginRequestDto USER_LOGIN_REQUEST_DTO =
             new UserLoginRequestDto(VALID_USER_EMAIL, USER_PASSWORD);
-
-    public static final Set<CartItem> CART_ITEMS = new HashSet<>();
-
-    static {
-        CART_ITEMS.add(CART_ITEM);
-        CART_ITEMS.add(SECOND_CART_ITEM);
-    }
 
     //Order
     public static final Order ORDER = new Order();
