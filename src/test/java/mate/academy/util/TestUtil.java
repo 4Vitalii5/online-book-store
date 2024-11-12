@@ -117,6 +117,20 @@ public class TestUtil {
             UPDATED_BOOK_ISBN, UPDATED_BOOK_PRICE, UPDATED_BOOK_DESCRIPTION,
             UPDATED_BOOK_COVER_IMAGE, false, Set.of(SECOND_CATEGORY)
     );
+    public static final Book BOOK = new Book();
+
+    static {
+        BOOK.setId(BOOK_ID);
+        BOOK.setPrice(ITEM_PRICE);
+    }
+
+    public static final Book SECOND_BOOK = new Book();
+
+    static {
+        SECOND_BOOK.setId(SECOND_BOOK_ID);
+        SECOND_BOOK.setPrice(ITEM_PRICE);
+    }
+
     //BookDto
     public static final BookDto SAMPLE_BOOK_DTO = new BookDto(
             SAMPLE_BOOK.getId(), SAMPLE_BOOK.getTitle(), SAMPLE_BOOK.getAuthor(),
@@ -170,6 +184,14 @@ public class TestUtil {
     //Specification
     public static final Specification<Book> SPECIFICATION = (root, query, cb) ->
             cb.equal(root.get(SEARCH_FIELD_AUTHOR), SEARCH_AUTHOR);
+    //Roles
+    public static final Role ROLE = new Role();
+
+    static {
+        ROLE.setId(1L);
+        ROLE.setRole(DEFAULT_ROLE);
+    }
+
     //User
     public static final UserRegistrationRequestDto USER_REGISTRATION_REQUEST_DTO =
             new UserRegistrationRequestDto(
@@ -180,14 +202,6 @@ public class TestUtil {
                     USER_LAST_NAME,
                     USER_SHIPPING_ADDRESS
             );
-
-    public static final Role ROLE = new Role();
-
-    static {
-        ROLE.setId(1L);
-        ROLE.setRole(DEFAULT_ROLE);
-    }
-
     public static final User USER = new User();
 
     static {
@@ -226,20 +240,6 @@ public class TestUtil {
             Order.Status.COMPLETED.name()
     );
 
-    public static final Book BOOK = new Book();
-
-    static {
-        BOOK.setId(BOOK_ID);
-        BOOK.setPrice(ITEM_PRICE);
-    }
-
-    public static final Book SECOND_BOOK = new Book();
-
-    static {
-        SECOND_BOOK.setId(SECOND_BOOK_ID);
-        SECOND_BOOK.setPrice(ITEM_PRICE);
-    }
-
     public static final OrderItem ORDER_ITEM = new OrderItem();
 
     static {
@@ -249,6 +249,7 @@ public class TestUtil {
         ORDER_ITEM.setPrice(ITEM_PRICE);
     }
 
+    //Shopping cart
     public static final ShoppingCart SHOPPING_CART = new ShoppingCart();
 
     static {
@@ -278,33 +279,6 @@ public class TestUtil {
         SHOPPING_CART.setCartItems(cartItems);
     }
 
-    public static final Order ORDER = new Order();
-
-    static {
-        ORDER.setId(ORDER_ID);
-        ORDER.setUser(USER);
-        ORDER.setOrderItems(Set.of(ORDER_ITEM));
-        ORDER.setTotal(TOTAL_PRICE);
-        ORDER.setOrderDate(ORDER_DATE);
-        ORDER.setShippingAddress(SHIPPING_ADDRESS);
-        ORDER.setStatus(Order.Status.NEW);
-    }
-
-    public static final OrderItemDto ORDER_ITEM_DTO = new OrderItemDto(
-            ITEM_ID,
-            BOOK_ID,
-            ITEM_QUANTITY
-    );
-
-    public static final OrderDto ORDER_DTO = new OrderDto(
-            ORDER_ID,
-            USER_ID,
-            List.of(ORDER_ITEM_DTO),
-            ORDER_DATE,
-            TOTAL_PRICE,
-            Order.Status.NEW.name()
-    );
-    //ShoppingCart
     public static final CreateCartItemRequestDto CREATE_CART_ITEM_REQUEST_DTO =
             new CreateCartItemRequestDto(BOOK_ID, 2);
 
@@ -339,6 +313,34 @@ public class TestUtil {
         CART_ITEMS.add(CART_ITEM);
         CART_ITEMS.add(SECOND_CART_ITEM);
     }
+
+    //Order
+    public static final Order ORDER = new Order();
+
+    static {
+        ORDER.setId(ORDER_ID);
+        ORDER.setUser(USER);
+        ORDER.setOrderItems(Set.of(ORDER_ITEM));
+        ORDER.setTotal(TOTAL_PRICE);
+        ORDER.setOrderDate(ORDER_DATE);
+        ORDER.setShippingAddress(SHIPPING_ADDRESS);
+        ORDER.setStatus(Order.Status.NEW);
+    }
+
+    public static final OrderItemDto ORDER_ITEM_DTO = new OrderItemDto(
+            ITEM_ID,
+            BOOK_ID,
+            ITEM_QUANTITY
+    );
+
+    public static final OrderDto ORDER_DTO = new OrderDto(
+            ORDER_ID,
+            USER_ID,
+            List.of(ORDER_ITEM_DTO),
+            ORDER_DATE,
+            TOTAL_PRICE,
+            Order.Status.NEW.name()
+    );
 
     private TestUtil() {
     }
