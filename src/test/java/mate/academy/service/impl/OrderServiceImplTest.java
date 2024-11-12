@@ -5,14 +5,13 @@ import static mate.academy.util.TestConstants.ORDER_ID;
 import static mate.academy.util.TestConstants.ORDER_NOT_FOUND_MESSAGE;
 import static mate.academy.util.TestConstants.ORDER_PROCESSING_EXCEPTION_MESSAGE;
 import static mate.academy.util.TestConstants.USER_ID;
-import static mate.academy.util.TestUtil.CART_ITEM;
+import static mate.academy.util.TestUtil.CART_ITEMS;
 import static mate.academy.util.TestUtil.CREATE_ORDER_REQUEST_DTO;
 import static mate.academy.util.TestUtil.ORDER;
 import static mate.academy.util.TestUtil.ORDER_DTO;
 import static mate.academy.util.TestUtil.ORDER_ITEM;
 import static mate.academy.util.TestUtil.ORDER_ITEM_DTO;
 import static mate.academy.util.TestUtil.PAGEABLE;
-import static mate.academy.util.TestUtil.SECOND_CART_ITEM;
 import static mate.academy.util.TestUtil.SHOPPING_CART;
 import static mate.academy.util.TestUtil.UPDATE_ORDER_REQUEST_DTO;
 import static mate.academy.util.TestUtil.USER;
@@ -24,7 +23,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -34,7 +32,6 @@ import mate.academy.exception.EntityNotFoundException;
 import mate.academy.exception.OrderProcessingException;
 import mate.academy.mapper.OrderItemMapper;
 import mate.academy.mapper.OrderMapper;
-import mate.academy.model.CartItem;
 import mate.academy.model.ShoppingCart;
 import mate.academy.repository.cart.ShoppingCartRepository;
 import mate.academy.repository.order.OrderItemRepository;
@@ -67,10 +64,7 @@ class OrderServiceImplTest {
     @DisplayName("Create order from shopping cart")
     void createOrder_validShoppingCart_createsOrder() {
         // Given
-        Set<CartItem> cartItems = new HashSet<>();
-        cartItems.add(CART_ITEM);
-        cartItems.add(SECOND_CART_ITEM);
-        SHOPPING_CART.setCartItems(cartItems);
+        SHOPPING_CART.setCartItems(CART_ITEMS);
         when(orderItemMapper.toOrderItem(any())).thenReturn(ORDER_ITEM);
         when(shoppingCartRepository.findByUserId(USER_ID)).thenReturn(SHOPPING_CART);
         when(orderMapper.toOrder(SHOPPING_CART)).thenReturn(ORDER);
