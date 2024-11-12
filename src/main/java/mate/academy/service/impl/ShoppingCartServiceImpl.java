@@ -63,7 +63,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Can't find cart item with id:" + cartItemId));
         cartItemMapper.updateCartItemFromDto(updateCartItemDto, existingCartItem);
-        shoppingCartRepository.save(shoppingCart);
         return shoppingCartMapper.toDto(shoppingCart);
     }
 
