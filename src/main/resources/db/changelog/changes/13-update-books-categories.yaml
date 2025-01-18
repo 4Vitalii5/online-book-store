@@ -51,4 +51,3 @@ databaseChangeLog:
               - column:
                   name: category_id
                   value: 1
-
