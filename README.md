@@ -62,6 +62,8 @@ Welcome to the Online Book Store project! This application aims to provide users
     DB_URL=your_database_url
     DB_USERNAME=your_database_username
     DB_PASSWORD=your_database_password
+    JWT_SECRET=your_jwt_secret
+    JWT_EXPIRATION=your_jwt_expiration
     ```
 5. **Run the application:**
     ```sh
