@@ -16,3 +16,8 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: mvn --batch-mode --update-snapshots verify
+        env:
+          JWT_EXPIRATION: ${{ secrets.JWT_EXPIRATION }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          MYSQLDB_USER: ${{ secrets.MYSQLDB_USER }}
+          MYSQLDB_ROOT_PASSWORD: ${{ secrets.MYSQLDB_ROOT_PASSWORD }}
