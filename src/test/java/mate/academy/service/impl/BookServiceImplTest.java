@@ -71,8 +71,10 @@ class BookServiceImplTest {
         when(bookRepository.save(SAMPLE_BOOK)).thenReturn(SAMPLE_BOOK);
         when(bookRepository.existsByIsbn(SAMPLE_BOOK.getIsbn())).thenReturn(false);
         when(bookMapper.toDto(SAMPLE_BOOK)).thenReturn(SAMPLE_BOOK_DTO);
+
         //When
         BookDto savedBookDto = bookService.save(CREATE_BOOK_REQUEST_DTO);
+
         //Then
         assertThat(savedBookDto).isEqualTo(SAMPLE_BOOK_DTO);
         verify(bookRepository, times(1))
@@ -88,11 +90,12 @@ class BookServiceImplTest {
         String expected = String.format(DUPLICATE_ISBN_MESSAGE, CREATE_BOOK_REQUEST_DTO.isbn());
         when(bookMapper.toEntity(CREATE_BOOK_REQUEST_DTO)).thenReturn(NEW_BOOK);
         when(bookRepository.existsByIsbn(NEW_BOOK.getIsbn())).thenReturn(true);
+
         //When
         DuplicateResourceException exception = assertThrows(DuplicateResourceException.class,
-                () -> bookService.save(CREATE_BOOK_REQUEST_DTO)
-        );
+                () -> bookService.save(CREATE_BOOK_REQUEST_DTO));
         String actual = exception.getMessage();
+
         //Then
         assertThat(actual).isEqualTo(expected);
         verify(bookRepository, times(1))
@@ -105,8 +108,10 @@ class BookServiceImplTest {
         //Given
         when(bookMapper.toDto(SAMPLE_BOOK)).thenReturn(SAMPLE_BOOK_DTO);
         when(bookRepository.findAll(PAGEABLE)).thenReturn(BOOK_PAGE);
+
         //When
         List<BookDto> bookDtos = bookService.findAll(PAGEABLE);
+
         //Then
         assertThat(bookDtos).hasSize(1);
         assertThat(bookDtos).containsExactly(SAMPLE_BOOK_DTO);
@@ -120,8 +125,10 @@ class BookServiceImplTest {
         //Given
         when(bookMapper.toDto(SAMPLE_BOOK)).thenReturn(SAMPLE_BOOK_DTO);
         when(bookRepository.findById(SAMPLE_BOOK.getId())).thenReturn(Optional.of(SAMPLE_BOOK));
+
         //When
         BookDto foundBookDto = bookService.findById(SAMPLE_BOOK.getId());
+
         //Then
         assertThat(foundBookDto).isEqualTo(SAMPLE_BOOK_DTO);
         verify(bookRepository, times(1)).findById(SAMPLE_BOOK.getId());
@@ -134,10 +141,12 @@ class BookServiceImplTest {
         //Given
         when(bookRepository.findById(SAMPLE_BOOK.getId())).thenReturn(Optional.empty());
         String expected = String.format(BOOK_NOT_FOUND_MESSAGE, SAMPLE_BOOK.getId());
+
         //When
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
                 () -> bookService.findById(SAMPLE_BOOK.getId()));
         String actual = exception.getMessage();
+
         //Then
         assertThat(actual).isEqualTo(expected);
         verify(bookRepository, times(1)).findById(SAMPLE_BOOK.getId());
@@ -154,8 +163,10 @@ class BookServiceImplTest {
         when(categoryMapper.toEntity(CATEGORY_DTO)).thenReturn(SECOND_CATEGORY);
         doNothing().when(bookMapper).updateBookFromDto(UPDATE_BOOK_REQUEST_DTO, SAMPLE_BOOK);
         when(bookMapper.toDto(UPDATED_BOOK)).thenReturn(UPDATED_BOOK_DTO);
+
         //When
         BookDto actual = bookService.updateBookById(SAMPLE_BOOK_ID, UPDATE_BOOK_REQUEST_DTO);
+
         //Then
         assertThat(actual).isEqualTo(UPDATED_BOOK_DTO);
         verify(bookRepository, times(1)).findById(SAMPLE_BOOK_ID);
@@ -175,10 +186,12 @@ class BookServiceImplTest {
         String expected = String.format(DUPLICATE_ISBN_MESSAGE, UPDATE_BOOK_REQUEST_DTO.isbn());
         when(bookRepository.findById(SAMPLE_BOOK_ID)).thenReturn(Optional.of(SAMPLE_BOOK));
         when(bookRepository.existsByIsbn(UPDATE_BOOK_REQUEST_DTO.isbn())).thenReturn(true);
+
         //When
         DuplicateResourceException exception = assertThrows(DuplicateResourceException.class,
                 () -> bookService.updateBookById(SAMPLE_BOOK_ID, UPDATE_BOOK_REQUEST_DTO));
         String actual = exception.getMessage();
+
         //Then
         assertThat(actual).isEqualTo(expected);
         verify(bookRepository, times(1)).findById(SAMPLE_BOOK_ID);
@@ -191,8 +204,10 @@ class BookServiceImplTest {
     void deleteById_validBookId_isOk() {
         //Given
         doNothing().when(bookRepository).deleteById(SAMPLE_BOOK_ID);
+
         // When
         bookService.deleteById(SAMPLE_BOOK_ID);
+
         // Then
         verify(bookRepository, times(1)).deleteById(SAMPLE_BOOK_ID);
     }
@@ -204,8 +219,10 @@ class BookServiceImplTest {
         Specification<Book> specification = bookSpecificationBuilder.build(SEARCH_PARAMETERS);
         when(bookRepository.findAll(specification, PAGEABLE)).thenReturn(BOOK_PAGE);
         when(bookMapper.toDto(SAMPLE_BOOK)).thenReturn(SAMPLE_BOOK_DTO);
+
         //When
         List<BookDto> actual = bookService.search(SEARCH_PARAMETERS, PAGEABLE);
+
         //Then
         assertThat(actual).hasSize(1);
         assertThat(actual.get(FIRST_RECORD)).isEqualTo(SAMPLE_BOOK_DTO);
@@ -224,9 +241,11 @@ class BookServiceImplTest {
                 .thenReturn(BOOK_DTO_WITHOUT_CATEGORY_IDS);
         when(bookRepository.findAllByCategories_Id(FIRST_CATEGORY.getId(), PAGEABLE))
                 .thenReturn(List.of(SAMPLE_BOOK));
+
         //When
-        List<BookDtoWithoutCategoryIds> bookDtos =
-                bookService.getBooksByCategoryId(FIRST_CATEGORY.getId(), PAGEABLE);
+        List<BookDtoWithoutCategoryIds> bookDtos = bookService.getBooksByCategoryId(
+                FIRST_CATEGORY.getId(), PAGEABLE);
+
         //Then
         assertThat(bookDtos).hasSize(1);
         assertThat(bookDtos.get(0)).isEqualTo(BOOK_DTO_WITHOUT_CATEGORY_IDS);
@@ -243,10 +262,12 @@ class BookServiceImplTest {
         //Given
         String expected = String.format(CATEGORY_NOT_FOUND_MESSAGE, FIRST_CATEGORY.getId());
         when(categoryService.getById(FIRST_CATEGORY.getId())).thenReturn(null);
+
         //When
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
                 () -> bookService.getBooksByCategoryId(FIRST_CATEGORY.getId(), PAGEABLE));
         String actual = exception.getMessage();
+
         //Then
         assertThat(actual).isEqualTo(expected);
         verify(categoryService, times(1)).getById(FIRST_CATEGORY.getId());

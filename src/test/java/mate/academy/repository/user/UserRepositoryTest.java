@@ -15,10 +15,11 @@ import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Sql(scripts = "classpath:database/clean-database.sql")
+@Sql(scripts = "classpath:database/clean-database.sql",
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 @Sql(scripts = {
         "classpath:database/users/add-users.sql",
-}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+})
 @Sql(scripts = {
         "classpath:database/users/remove-users.sql",
 }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
@@ -31,6 +32,7 @@ class UserRepositoryTest {
     void findByEmail_validEmail_returnsUser() {
         // When
         Optional<User> user = userRepository.findByEmail(VALID_USER_EMAIL);
+
         // Then
         assertThat(user).isPresent();
         assertThat(user.get().getEmail()).isEqualTo(VALID_USER_EMAIL);
@@ -41,6 +43,7 @@ class UserRepositoryTest {
     void findByEmail_nonExistingEmail_returnsEmpty() {
         // When
         Optional<User> user = userRepository.findByEmail(NON_EXISTING_USER_EMAIL);
+
         // Then
         assertThat(user).isNotPresent();
     }

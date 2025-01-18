@@ -33,12 +33,13 @@ import org.springframework.test.web.servlet.MvcResult;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Sql(scripts = "classpath:database/clean-database.sql")
+@Sql(scripts = "classpath:database/clean-database.sql",
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 @Sql(scripts = {
         "classpath:database/books/add-books.sql",
         "classpath:database/categories/add-categories.sql",
         "classpath:database/books-categories/set-books-to-categories.sql"
-}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+})
 @Sql(scripts = {
         "classpath:database/books/remove-books.sql",
         "classpath:database/categories/remove-categories.sql"
@@ -60,6 +61,7 @@ public class BookControllerTest {
                         .content(objectMapper.writeValueAsString(CREATE_BOOK_REQUEST_DTO)))
                 .andExpect(status().isOk())
                 .andReturn();
+
         // Then
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         BookDto responseDto = objectMapper.readValue(jsonResponse, BookDto.class);
@@ -75,6 +77,7 @@ public class BookControllerTest {
         MvcResult mvcResult = mockMvc.perform(get("/books"))
                 .andExpect(status().isOk())
                 .andReturn();
+
         // Then
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         BookDto[] responseDtos = objectMapper.readValue(jsonResponse, BookDto[].class);
@@ -89,6 +92,7 @@ public class BookControllerTest {
         MvcResult mvcResult = mockMvc.perform(get("/books/{id}", VALID_FIRST_BOOK_ID))
                 .andExpect(status().isOk())
                 .andReturn();
+
         // Then
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         BookDto responseDto = objectMapper.readValue(jsonResponse, BookDto.class);
@@ -107,6 +111,7 @@ public class BookControllerTest {
                         .content(objectMapper.writeValueAsString(UPDATE_BOOK_REQUEST_DTO)))
                 .andExpect(status().isOk())
                 .andReturn();
+
         // Then
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         BookDto responseDto = objectMapper.readValue(jsonResponse, BookDto.class);
@@ -122,6 +127,7 @@ public class BookControllerTest {
         mockMvc.perform(delete("/books/{id}", VALID_SECOND_BOOK_ID)
                         .with(csrf()))
                 .andExpect(status().isNoContent());
+
         // Then
         mockMvc.perform(get("/books/{id}", VALID_SECOND_BOOK_ID))
                 .andExpect(status().isNotFound());
@@ -138,6 +144,7 @@ public class BookControllerTest {
                         .param(SEARCH_PARAM_PRICES, SEARCH_PRICE_MIN, SEARCH_PRICE_MAX))
                 .andExpect(status().isOk())
                 .andReturn();
+
         // Then
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         BookDto[] responseDtos = objectMapper.readValue(jsonResponse, BookDto[].class);

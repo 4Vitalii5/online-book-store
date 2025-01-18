@@ -75,7 +75,6 @@ class ShoppingCartServiceImplTest {
     @Test
     @DisplayName("Create shopping cart")
     void createShoppingCart_validUser_createsShoppingCart() {
-        // Given
         // When
         shoppingCartService.createShoppingCart(NEW_USER);
 
@@ -113,10 +112,10 @@ class ShoppingCartServiceImplTest {
         when(bookRepository.findById(CREATE_CART_ITEM_REQUEST_DTO.bookId()))
                 .thenReturn(Optional.of(BOOK));
         when(shoppingCartMapper.toDto(SHOPPING_CART)).thenReturn(SHOPPING_CART_DTO);
+
         // When
         ShoppingCartDto actualShoppingCartDto = shoppingCartService.addBookToShoppingCart(
-                CREATE_CART_ITEM_REQUEST_DTO
-        );
+                CREATE_CART_ITEM_REQUEST_DTO);
 
         // Then
         assertThat(actualShoppingCartDto).isEqualTo(SHOPPING_CART_DTO);
@@ -134,14 +133,14 @@ class ShoppingCartServiceImplTest {
         SecurityContextHolder.setContext(securityContext);
         when(bookRepository.findById(BOOK_ID)).thenReturn(Optional.empty());
         when(shoppingCartRepository.findByUserId(USER_ID)).thenReturn(SHOPPING_CART);
+
         // When
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
                 () -> shoppingCartService.addBookToShoppingCart(CREATE_CART_ITEM_REQUEST_DTO));
 
         // Then
         assertThat(exception.getMessage()).isEqualTo(
-                String.format(BOOK_NOT_FOUND_MESSAGE, BOOK_ID)
-        );
+                String.format(BOOK_NOT_FOUND_MESSAGE, BOOK_ID));
         verify(bookRepository, times(1)).findById(BOOK_ID);
     }
 
@@ -155,6 +154,7 @@ class ShoppingCartServiceImplTest {
         when(shoppingCartMapper.toDto(SHOPPING_CART)).thenReturn(SHOPPING_CART_DTO);
         doNothing().when(cartItemMapper).updateCartItemFromDto(UPDATE_CART_ITEM_DTO, CART_ITEM);
         when(shoppingCartRepository.findByUserId(USER_ID)).thenReturn(SHOPPING_CART);
+
         // When
         ShoppingCartDto actualShoppingCartDto = shoppingCartService.updateShoppingCart(ITEM_ID,
                 UPDATE_CART_ITEM_DTO);
@@ -162,6 +162,7 @@ class ShoppingCartServiceImplTest {
                 .filter(cart -> cart.id().equals(ITEM_ID))
                 .map(CartItemResponseDto::quantity)
                 .findFirst().get();
+
         // Then
         assertThat(actual).isEqualTo(UPDATE_CART_ITEM_DTO.quantity());
         verify(cartItemMapper, times(1)).updateCartItemFromDto(UPDATE_CART_ITEM_DTO, CART_ITEM);
@@ -182,8 +183,7 @@ class ShoppingCartServiceImplTest {
 
         // Then
         assertThat(exception.getMessage()).isEqualTo(
-                String.format(CART_NOT_FOUND_MESSAGE, ITEM_ID)
-        );
+                String.format(CART_NOT_FOUND_MESSAGE, ITEM_ID));
         verify(shoppingCartRepository, times(1)).findByUserId(USER_ID);
     }
 

@@ -23,12 +23,13 @@ import org.springframework.test.web.servlet.MvcResult;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Sql(scripts = "classpath:database/clean-database.sql")
+@Sql(scripts = "classpath:database/clean-database.sql",
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 @Sql(scripts = {
         "classpath:database/roles/add-roles.sql",
         "classpath:database/users/add-users.sql",
         "classpath:database/users-roles/set-users-roles.sql",
-}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+})
 @Sql(scripts = {
         "classpath:database/orders/remove-order-items.sql",
         "classpath:database/shopping-carts/remove-cart-items.sql",

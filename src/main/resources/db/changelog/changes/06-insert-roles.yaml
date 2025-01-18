@@ -15,4 +15,3 @@ databaseChangeLog:
               - column:
                   name: role
                   valueComputed: "'ROLE_USER'"
-

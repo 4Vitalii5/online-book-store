@@ -27,12 +27,13 @@ import org.springframework.test.web.servlet.MvcResult;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Sql(scripts = "classpath:database/clean-database.sql")
+@Sql(scripts = "classpath:database/clean-database.sql",
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 @Sql(scripts = {
         "classpath:database/books/add-books.sql",
         "classpath:database/categories/add-categories.sql",
         "classpath:database/books-categories/set-books-to-categories.sql"
-}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+})
 @Sql(scripts = {
         "classpath:database/books/remove-books.sql",
         "classpath:database/categories/remove-categories.sql"
@@ -54,6 +55,7 @@ public class CategoryControllerTest {
                         .content(objectMapper.writeValueAsString(CREATE_CATEGORY_REQUEST_DTO)))
                 .andExpect(status().isOk())
                 .andReturn();
+
         // Then
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         CategoryDto responseDto = objectMapper.readValue(jsonResponse, CategoryDto.class);
@@ -69,6 +71,7 @@ public class CategoryControllerTest {
         MvcResult mvcResult = mockMvc.perform(get("/categories"))
                 .andExpect(status().isOk())
                 .andReturn();
+
         // Then
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         CategoryDto[] responseDtos = objectMapper.readValue(jsonResponse, CategoryDto[].class);
@@ -83,6 +86,7 @@ public class CategoryControllerTest {
         MvcResult mvcResult = mockMvc.perform(get("/categories/{id}", FIRST_CATEGORY.getId()))
                 .andExpect(status().isOk())
                 .andReturn();
+
         // Then
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         CategoryDto responseDto = objectMapper.readValue(jsonResponse, CategoryDto.class);
@@ -101,6 +105,7 @@ public class CategoryControllerTest {
                         .content(objectMapper.writeValueAsString(UPDATE_CATEGORY_REQUEST_DTO)))
                 .andExpect(status().isOk())
                 .andReturn();
+
         // Then
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         CategoryDto responseDto = objectMapper.readValue(jsonResponse, CategoryDto.class);
@@ -116,6 +121,7 @@ public class CategoryControllerTest {
         mockMvc.perform(delete("/categories/{id}", FIRST_CATEGORY.getId())
                         .with(csrf()))
                 .andExpect(status().isNoContent());
+
         // Then
         mockMvc.perform(get("/categories/{id}", FIRST_CATEGORY.getId()))
                 .andExpect(status().isNotFound());
@@ -130,6 +136,7 @@ public class CategoryControllerTest {
                         FIRST_CATEGORY.getId()))
                 .andExpect(status().isOk())
                 .andReturn();
+
         // Then
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         BookDtoWithoutCategoryIds[] responseDtos = objectMapper.readValue(

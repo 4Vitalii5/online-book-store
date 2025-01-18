@@ -1,130 +1,75 @@
-<h1 style="text-align: center;">Online Book Store</h1>
+<!-- LOGO -->
+<br />
+<h1 align="center">
+  <img src="src/main/resources/icons/online_book_store.png" alt="Project Logo" width="200"/>
+  <br>Online Book Store
+</h1>
+
+<p align="center">
+  <a href="#introduction">Introduction</a> •
+  <a href="#technologies-used">Technologies</a> •
+  <a href="#main-features">Main Features</a> •
+  <a href="#setup-instructions">Setup</a> •
+  <a href="#docker-setup">Docker</a> •
+  <a href="#challenges-and-solutions">Challenges</a> •
+  <a href="#tests">Tests</a> •
+  <a href="#postman-collection">Postman</a> •
+  <a href="#video-demonstration">Demonstration</a> •
+  <a href="#author">Author</a>
+</p>
 
 ## Introduction
-This project is developed to implement an online bookstore where users can browse, purchase books, and manage the store. We used modern technologies such as Spring Boot for fast and secure application development.
+
+Welcome to the Online Book Store project! This application aims to provide users with an intuitive and seamless platform to browse, purchase, and manage books online. Leveraging the power of modern technologies such as Spring Boot, the project ensures a secure, scalable, and high-performance environment for both shoppers and administrators. Users can effortlessly search for books, add them to their shopping cart, and complete purchases, while administrators can efficiently manage the book catalog and orders.
 
 ## Technologies Used
-- **Spring Boot** for building productive applications
-- **Spring Data JPA** for database interactions
-- **Liquibase** for database change management
-- **Mapstruct** for automatic object mapping
-- **Swagger** for API documentation
-- **Spring Security** for securing the application
-- **JWT** for authentication
+
+- **Spring Boot v3.3.4** for building productive applications
+- **Spring Security v3.3.4** for securing the application
+- **Spring Data JPA v3.3.4** for database interactions
+- **Liquibase v4.27.0** for database change management
+- **Mapstruct v1.5.5** for automatic object mapping
+- **Swagger v2.1.0** for API documentation
+- **JWT v0.12.5** for authentication
 
 ## Main Features
-### Controllers and Functions:
-- **Book Controller**:
-    - Get all books: `GET /api/books`
-    - Get book by ID: `GET /api/books/{id}`
-    - Create a new book: `POST /api/books`
-    - Update a book by ID: `PUT /api/books/{id}`
-    - Delete a book by ID: `DELETE /api/books/{id}`
-    - Search books: `GET /api/books/search`
-        - Example search parameters: `BookSearchParametersDto(title, author, isbn)`
 
-- **Authentication Controller**:
-    - User registration: `POST /api/auth/register`
-        - Example request body:
-          ```json
-          {
-            "email": "john.doe@example.com",
-            "password": "securePassword123",
-            "repeatPassword": "securePassword123",
-            "firstName": "John",
-            "lastName": "Doe",
-            "shippingAddress": "123 Main St, City, Country"
-          }
-          ```
-        - Example response body:
-          ```json
-          {
-            "id": 1,
-            "email": "john.doe@example.com",
-            "firstName": "John",
-            "lastName": "Doe",
-            "shippingAddress": "123 Main St, City, Country"
-          }
-          ```
-    - User login: `POST /api/auth/login`
-        - Example request body:
-          ```json
-          {
-            "email": "john.doe@example.com",
-            "password": "securePassword123"
-          }
-          ```
-        - Example response body:
-          ```json
-          {
-            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-          }
-          ```
-
-- **Category Controller**:
-    - Get all categories: `GET /api/categories`
-    - Get category by ID: `GET /api/categories/{id}`
-    - Create a new category: `POST /api/categories`
-    - Update category by ID: `PUT /api/categories/{id}`
-    - Delete category by ID: `DELETE /api/categories/{id}`
-    - Get books by category: `GET /api/categories/{id}/books`
-
-- **Shopping Cart Controller**:
-    - Get user's shopping cart: `GET /api/cart`
-    - Add book to cart: `POST /api/cart`
-    - Update book quantity in cart: `PUT /api/cart/items/{cartItemId}`
-    - Remove book from cart: `DELETE /api/cart/items/{cartItemId}`
-
-- **Order Controller**:
-    - Place an order: `POST /api/orders`
-        - Example request body:
-          ```json
-          {
-            "shippingAddress": "Kyiv, Shevchenko ave, 1"
-          }
-          ```
-    - Get user's order history: `GET /api/orders`
-    - Update order status: `PATCH /api/orders/{id}`
-        - Example request body:
-          ```json
-          {
-            "status": "DELIVERED"
-          }
-          ```
-
-- **Order Item Controller**:
-    - Get items in an order: `GET /api/orders/{orderId}/items`
-    - Get item in an order by ID: `GET /api/orders/{orderId}/items/{itemId}`
-
-### Models:
-- **Book**: includes fields id, title, author, isbn, price, description, coverImage.
-- **User**: information about registered users, including their authentication details and personal information.
-- **Role**: role of a user in the system, such as admin or user.
-- **Category**: category to which a book can belong.
-- **Shopping Cart**: user's shopping cart.
-- **Cart Item**: item in a user's shopping cart.
-- **Order**: order placed by a user.
-- **Order Item**: item in a user's order.
+- **Book Management**: Add, update, retrieve, and delete books.
+- **Authentication**: Register and log in to the system.
+- **Category Management**: Add, update, retrieve, and delete book categories.
+- **Shopping Cart Management**: Add books to the cart, update book quantities, and remove books from the cart.
+- **Order Management**: Create, update, retrieve, and cancel orders.
+- **Order Item Management**: Retrieve and manage items within orders.
 
 ## Setup Instructions
-1. Clone this repository:
+
+1. **Clone this repository:**
     ```sh
-    git clone https://github.com/yourusername/your-repo.git
+    git clone https://github.com/4Vitalii5/online-book-store
     ```
-2. Navigate to the project directory:
+2. **Navigate to the project directory:**
     ```sh
-    cd your-repo
+    cd online-book-store
     ```
-3. Install dependencies:
+3. **Install dependencies:**
     ```sh
     mvn install
     ```
-4. Run the application:
+4. **Set up Environment Variables**
+
+    - Use a `.env.template` file and add the values for these variables:
+    ```plaintext
+    DB_URL=your_database_url
+    DB_USERNAME=your_database_username
+    DB_PASSWORD=your_database_password
+    ```
+5. **Run the application:**
     ```sh
     mvn spring-boot:run
     ```
 
 ## Challenges and Solutions
+
 ### Challenge 1: Setting up CI for the project
 **Solution:** Using GitHub Actions for automatic build and testing of the project.
 
@@ -144,34 +89,42 @@ This project is developed to implement an online bookstore where users can brows
 **Solution:** Implementing Spring Security and JWT for securing and authenticating users.
 
 ## Docker
+
 ### Docker Setup
-1. Create a Docker image:
+
+1. **Create a Docker image:**
     ```sh
     docker build -t online-book-store .
     ```
-2. Run the Docker container:
+2. **Run the Docker container:**
     ```sh
     docker-compose up
     ```
+3. **Access the Application**
+
+   - The application will be running at `http://localhost:8081/api`.
+
 
 ### Using Docker Hub
-1. Pull the Docker image:
+
+1. **Pull the Docker image:**
     ```sh
     docker pull vitalii454/online-book-store:latest
     ```
-2. Run the Docker container:
+2. **Run the Docker container:**
     ```sh
     docker run -p 8081:8080 vitalii454/online-book-store
     ```
 
 ## Tests
-## Test Results and Coverage
 
-| Metric | Value |
-|--------|-------|
-| Total Tests | 92    |
-| Passed Tests | 92    |
-| Failed Tests | 0     |
+### Test Results and Coverage
+
+| Metric        | Value |
+|---------------|-------|
+| Total Tests   | 92    |
+| Passed Tests  | 92    |
+| Failed Tests  | 0     |
 | Skipped Tests | 0     |
 
 ### Coverage Summary
@@ -180,21 +133,32 @@ This project is developed to implement an online bookstore where users can brows
 |---------------|------------|
 | Lines         | 97%        |
 | Branches      | 75%        |
-| Method        | 99%        |
-| Class             | 100%       |
-
+| Methods       | 99%        |
+| Classes       | 100%       |
 
 ## Postman Collection
-For easy testing and interaction with the API, you can use the Postman collection containing all necessary requests. 
 
-### Usage
-1. Open Postman and import the [OnlineBookStore.postman_collection.json](src/main/resources/postman/Online-Book-Store.postman_collection.json).
+For easy testing and interaction with the API, you can use the Postman collection containing all necessary requests.
+
+### 🚀 Usage
+
+1. Open Postman and import the [OnlineBookStore.postman_collection.json](src/main/resources/postman/online-book-store.postman_collection.json).
 2. Navigate to the imported Online Book Store collection.
 3. Execute the necessary requests using the appropriate methods and parameters.
 
-> **Note:** Before using the requests, ensure that your local server is running and you have access to the database.
+> **Note:** Before using the requests, ensure that your local server is running, and you have access to the database.
 
 ## Video Demonstration
+
 [Online Book Store demonstration in Postman](https://www.loom.com/share/5a21def77a634f698610a819174d644c?sid=a7b41903-f9c1-4838-8956-e0f64cd3b2cf)
+
+## Author
+
+👤 **Vitalii Pavlyk**
+
+- Linkedin: [@VitaliiPavlyk](https://www.linkedin.com/in/vitalii-pavlyk-82b5aa1a1/)
+- Github: [@4Vitalii5](https://github.com/4Vitalii5)
+
+## Happy Coding!
 
 ---

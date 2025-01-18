@@ -31,7 +31,8 @@ import org.springframework.test.web.servlet.MvcResult;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Sql(scripts = "classpath:database/clean-database.sql")
+@Sql(scripts = "classpath:database/clean-database.sql",
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 @Sql(scripts = {
         "classpath:database/roles/add-roles.sql",
         "classpath:database/users/add-users.sql",
@@ -43,7 +44,7 @@ import org.springframework.test.web.servlet.MvcResult;
         "classpath:database/books-categories/set-books-to-categories.sql",
         "classpath:database/orders/add-orders.sql",
         "classpath:database/orders/add-order-items.sql"
-}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+})
 @Sql(scripts = {
         "classpath:database/orders/remove-order-items.sql",
         "classpath:database/shopping-carts/remove-cart-items.sql",
@@ -65,12 +66,15 @@ public class OrderControllerTest {
     @DisplayName("Verify creation of new order")
     @WithUserDetails(value = VALID_USER_EMAIL)
     void addOrder_withValidInput_returnsCreatedOrder() throws Exception {
+        //When
         MvcResult mvcResult = mockMvc.perform(post("/orders")
                         .with(csrf())
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(CREATE_ORDER_REQUEST_DTO)))
                 .andExpect(status().isCreated())
                 .andReturn();
+
+        //Then
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         OrderDto responseDto = objectMapper.readValue(jsonResponse, OrderDto.class);
         assertThat(responseDto).isNotNull();
@@ -83,9 +87,12 @@ public class OrderControllerTest {
     @DisplayName("Get all orders")
     @WithUserDetails(value = VALID_USER_EMAIL)
     void getOrders_withValidRequest_returnsOrders() throws Exception {
+        //When
         MvcResult mvcResult = mockMvc.perform(get("/orders"))
                 .andExpect(status().isOk())
                 .andReturn();
+
+        //Then
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         OrderDto[] responseDtos = objectMapper.readValue(jsonResponse, OrderDto[].class);
         assertThat(responseDtos).isNotEmpty();
@@ -95,9 +102,12 @@ public class OrderControllerTest {
     @DisplayName("Get order items")
     @WithMockUser(username = VALID_USER_EMAIL, roles = "USER")
     void getOrderItems_withValidOrderId_returnsOrderItems() throws Exception {
+        //When
         MvcResult mvcResult = mockMvc.perform(get("/orders/{orderId}/items", ORDER_ID))
                 .andExpect(status().isOk())
                 .andReturn();
+
+        //Then
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         OrderItemDto[] responseDtos = objectMapper.readValue(jsonResponse, OrderItemDto[].class);
         assertThat(responseDtos).isNotEmpty();
@@ -107,10 +117,13 @@ public class OrderControllerTest {
     @DisplayName("Get order item by id")
     @WithMockUser(username = VALID_USER_EMAIL, roles = "USER")
     void getOrderItem_withValidId_returnsOrderItem() throws Exception {
+        //When
         MvcResult mvcResult = mockMvc.perform(get("/orders/{orderId}/items/{id}",
                         ORDER_ID, ITEM_ID))
                 .andExpect(status().isOk())
                 .andReturn();
+
+        //Then
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         OrderItemDto responseDto = objectMapper.readValue(jsonResponse, OrderItemDto.class);
         assertThat(responseDto).isNotNull();
@@ -121,12 +134,15 @@ public class OrderControllerTest {
     @DisplayName("Update order status")
     @WithMockUser(username = VALID_USER_EMAIL, roles = "ADMIN")
     void updateOrderStatus_withValidId_returnsUpdatedOrder() throws Exception {
+        //When
         MvcResult mvcResult = mockMvc.perform(patch("/orders/{id}", ORDER_ID)
                         .with(csrf())
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(UPDATE_ORDER_REQUEST_DTO)))
                 .andExpect(status().isOk())
                 .andReturn();
+
+        //Then
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         OrderDto responseDto = objectMapper.readValue(jsonResponse, OrderDto.class);
         assertThat(responseDto).isNotNull();

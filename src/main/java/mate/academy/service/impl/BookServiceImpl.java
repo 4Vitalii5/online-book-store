@@ -35,8 +35,7 @@ public class BookServiceImpl implements BookService {
     public BookDto save(CreateBookRequestDto requestDto) {
         Book book = bookMapper.toEntity(requestDto);
         if (bookRepository.existsByIsbn(book.getIsbn())) {
-            throw new DuplicateResourceException("Book with ISBN: "
-                    + book.getIsbn()
+            throw new DuplicateResourceException("Book with ISBN: " + book.getIsbn()
                     + " already exists");
         }
         book.setCategories(getCategoriesByIds(requestDto.categoryIds()));
