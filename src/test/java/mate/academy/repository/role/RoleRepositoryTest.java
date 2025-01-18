@@ -15,10 +15,11 @@ import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Sql(scripts = "classpath:database/clean-database.sql")
+@Sql(scripts = "classpath:database/clean-database.sql",
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 @Sql(scripts = {
         "classpath:database/roles/add-roles.sql",
-}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+})
 @Sql(scripts = {
         "classpath:database/roles/remove-roles.sql",
 }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
@@ -31,6 +32,7 @@ class RoleRepositoryTest {
     void findByRole_validRole_returnsRole() {
         // When
         Optional<Role> role = roleRepository.findByRole(DEFAULT_ROLE);
+
         // Then
         assertThat(role).isPresent();
         assertThat(role.get().getRole()).isEqualTo(DEFAULT_ROLE);
@@ -41,6 +43,7 @@ class RoleRepositoryTest {
     void findByRole_nonExistingRole_returnsEmpty() {
         // When
         Optional<Role> role = roleRepository.findByRole(INVALID_ROLE);
+
         // Then
         assertThat(role).isNotPresent();
     }

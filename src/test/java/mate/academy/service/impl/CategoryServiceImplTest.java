@@ -49,8 +49,10 @@ class CategoryServiceImplTest {
         when(categoryRepository.save(FIRST_CATEGORY)).thenReturn(FIRST_CATEGORY);
         when(categoryRepository.findByName(FIRST_CATEGORY.getName())).thenReturn(null);
         when(categoryMapper.toDto(FIRST_CATEGORY)).thenReturn(CATEGORY_DTO);
+
         // When
         CategoryDto savedCategoryDto = categoryService.save(CREATE_CATEGORY_REQUEST_DTO);
+
         // Then
         assertThat(savedCategoryDto).isEqualTo(CATEGORY_DTO);
         verify(categoryRepository, times(1))
@@ -67,10 +69,12 @@ class CategoryServiceImplTest {
         String expected = String.format(DUPLICATE_NAME_MESSAGE, FIRST_CATEGORY.getName());
         when(categoryMapper.toEntity(CREATE_CATEGORY_REQUEST_DTO)).thenReturn(FIRST_CATEGORY);
         when(categoryRepository.findByName(FIRST_CATEGORY.getName())).thenReturn(FIRST_CATEGORY);
+
         // When
         DuplicateResourceException exception = assertThrows(DuplicateResourceException.class,
                 () -> categoryService.save(CREATE_CATEGORY_REQUEST_DTO));
         String actual = exception.getMessage();
+
         // Then
         assertThat(actual).isEqualTo(expected);
         verify(categoryRepository, times(1))
@@ -84,8 +88,10 @@ class CategoryServiceImplTest {
         // Given
         when(categoryRepository.findAll(PAGEABLE)).thenReturn(CATEGORY_PAGE);
         when(categoryMapper.toDto(FIRST_CATEGORY)).thenReturn(CATEGORY_DTO);
+
         // When
         List<CategoryDto> categoryDtos = categoryService.findAll(PAGEABLE);
+
         // Then
         assertThat(categoryDtos).hasSize(1);
         assertThat(categoryDtos).containsExactly(CATEGORY_DTO);
@@ -101,8 +107,10 @@ class CategoryServiceImplTest {
         when(categoryRepository.findById(FIRST_CATEGORY.getId()))
                 .thenReturn(Optional.of(FIRST_CATEGORY));
         when(categoryMapper.toDto(FIRST_CATEGORY)).thenReturn(CATEGORY_DTO);
+
         // When
         CategoryDto foundCategoryDto = categoryService.getById(FIRST_CATEGORY.getId());
+
         // Then
         assertThat(foundCategoryDto).isEqualTo(CATEGORY_DTO);
         verify(categoryRepository, times(1)).findById(FIRST_CATEGORY.getId());
@@ -116,10 +124,12 @@ class CategoryServiceImplTest {
         // Given
         String expected = String.format(CATEGORY_NOT_FOUND_MESSAGE, FIRST_CATEGORY.getId());
         when(categoryRepository.findById(FIRST_CATEGORY.getId())).thenReturn(Optional.empty());
+
         // When
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
                 () -> categoryService.getById(FIRST_CATEGORY.getId()));
         String actual = exception.getMessage();
+
         // Then
         assertThat(actual).isEqualTo(expected);
         verify(categoryRepository, times(1)).findById(FIRST_CATEGORY.getId());
@@ -138,10 +148,11 @@ class CategoryServiceImplTest {
         doNothing().when(categoryMapper)
                 .updateCategoryFromDto(UPDATE_CATEGORY_REQUEST_DTO, FIRST_CATEGORY);
         when(categoryMapper.toDto(SECOND_CATEGORY)).thenReturn(UPDATED_CATEGORY_DTO);
+
         // When
         CategoryDto actual = categoryService.update(
-                FIRST_CATEGORY.getId(), UPDATE_CATEGORY_REQUEST_DTO
-        );
+                FIRST_CATEGORY.getId(), UPDATE_CATEGORY_REQUEST_DTO);
+
         // Then
         assertThat(actual).isEqualTo(UPDATED_CATEGORY_DTO);
         verify(categoryRepository, times(1)).findById(FIRST_CATEGORY.getId());
@@ -163,10 +174,12 @@ class CategoryServiceImplTest {
                 .thenReturn(Optional.of(FIRST_CATEGORY));
         when(categoryRepository.findByName(UPDATE_CATEGORY_REQUEST_DTO.name()))
                 .thenReturn(SECOND_CATEGORY);
+
         // When
         DuplicateResourceException exception = assertThrows(DuplicateResourceException.class,
                 () -> categoryService.update(FIRST_CATEGORY.getId(), UPDATE_CATEGORY_REQUEST_DTO));
         String actual = exception.getMessage();
+
         // Then
         assertThat(actual).isEqualTo(expected);
         verify(categoryRepository, times(1)).findById(FIRST_CATEGORY.getId());
@@ -181,8 +194,10 @@ class CategoryServiceImplTest {
         // Given
         Long categoryId = FIRST_CATEGORY.getId();
         doNothing().when(categoryRepository).deleteById(categoryId);
+
         // When
         categoryService.deleteById(categoryId);
+
         // Then
         verify(categoryRepository, times(1)).deleteById(categoryId);
         verifyNoMoreInteractions(categoryRepository, categoryMapper);

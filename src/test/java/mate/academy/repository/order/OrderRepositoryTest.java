@@ -19,11 +19,12 @@ import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Sql(scripts = "classpath:database/clean-database.sql")
+@Sql(scripts = "classpath:database/clean-database.sql",
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 @Sql(scripts = {
         "classpath:database/users/add-users.sql",
         "classpath:database/orders/add-orders.sql",
-}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+})
 @Sql(scripts = {
         "classpath:database/orders/remove-orders.sql",
         "classpath:database/users/remove-users.sql",
@@ -37,8 +38,8 @@ class OrderRepositoryTest {
     void findOrdersByUserId_validUserId_returnsOrders() {
         // When
         List<Order> orders = orderRepository.findOrdersByUserId(
-                USER_ID, PAGEABLE
-        );
+                USER_ID, PAGEABLE);
+
         // Then
         assertThat(orders).isNotEmpty();
         assertThat(orders.get(FIRST_RECORD).getUser().getId()).isEqualTo(USER_ID);
@@ -49,6 +50,7 @@ class OrderRepositoryTest {
     void existsById_validId_returnsTrue() {
         // When
         boolean exists = orderRepository.existsById(ORDER_ID);
+
         // Then
         assertThat(exists).isTrue();
     }
@@ -58,6 +60,7 @@ class OrderRepositoryTest {
     void existsById_nonExistingId_returnsFalse() {
         // When
         boolean exists = orderRepository.existsById(NON_EXISTING_ORDER_ID);
+
         // Then
         assertThat(exists).isFalse();
     }
@@ -67,6 +70,7 @@ class OrderRepositoryTest {
     void findById_validId_returnsOrder() {
         // When
         Optional<Order> order = orderRepository.findById(ORDER_ID);
+
         // Then
         assertThat(order).isPresent();
         assertThat(order.get().getId()).isEqualTo(ORDER_ID);
@@ -77,6 +81,7 @@ class OrderRepositoryTest {
     void findById_nonExistingId_returnsEmpty() {
         // When
         Optional<Order> order = orderRepository.findById(NON_EXISTING_ORDER_ID);
+
         // Then
         assertThat(order).isNotPresent();
     }

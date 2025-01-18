@@ -33,7 +33,8 @@ import org.springframework.test.web.servlet.MvcResult;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Sql(scripts = "classpath:database/clean-database.sql")
+@Sql(scripts = "classpath:database/clean-database.sql",
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 @Sql(scripts = {
         "classpath:database/roles/add-roles.sql",
         "classpath:database/users/add-users.sql",
@@ -45,7 +46,7 @@ import org.springframework.test.web.servlet.MvcResult;
         "classpath:database/books-categories/set-books-to-categories.sql",
         "classpath:database/orders/add-orders.sql",
         "classpath:database/orders/add-order-items.sql"
-}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+})
 @Sql(scripts = {
         "classpath:database/orders/remove-order-items.sql",
         "classpath:database/shopping-carts/remove-cart-items.sql",
@@ -60,7 +61,6 @@ import org.springframework.test.web.servlet.MvcResult;
 public class ShoppingCartControllerTest {
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -110,8 +110,7 @@ public class ShoppingCartControllerTest {
                         .with(csrf())
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(
-                                INVALID_CREATE_CART_ITEM_REQUEST_DTO
-                        )))
+                                INVALID_CREATE_CART_ITEM_REQUEST_DTO)))
                 .andExpect(status().isBadRequest());
     }
 

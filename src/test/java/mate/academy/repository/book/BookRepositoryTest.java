@@ -28,12 +28,13 @@ import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Sql(scripts = "classpath:database/clean-database.sql")
+@Sql(scripts = "classpath:database/clean-database.sql",
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 @Sql(scripts = {
         "classpath:database/books/add-books.sql",
         "classpath:database/categories/add-categories.sql",
         "classpath:database/books-categories/set-books-to-categories.sql"
-}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+})
 @Sql(scripts = {
         "classpath:database/books/remove-books.sql",
         "classpath:database/categories/remove-categories.sql"
@@ -47,6 +48,7 @@ class BookRepositoryTest {
     void save_validBook_returnsBook() {
         // When
         Book savedBook = bookRepository.save(NEW_BOOK);
+
         // Then
         assertThat(savedBook).isNotNull();
         assertThat(savedBook.getId()).isNotNull();
@@ -58,6 +60,7 @@ class BookRepositoryTest {
     void findById_validId_returnsBook() {
         // When
         Optional<Book> foundBook = bookRepository.findById(VALID_FIRST_BOOK_ID);
+
         // Then
         assertThat(foundBook).isPresent();
         assertThat(foundBook.get().getId()).isEqualTo(VALID_FIRST_BOOK_ID);
@@ -68,6 +71,7 @@ class BookRepositoryTest {
     void existsByIsbn_validIsbn_returnsTrue() {
         // When
         boolean exists = bookRepository.existsByIsbn(SAMPLE_BOOK_ISBN);
+
         // Then
         assertThat(exists).isTrue();
     }
@@ -77,6 +81,7 @@ class BookRepositoryTest {
     void findAll_pageable_returnsBooksPage() {
         // When
         Page<Book> bookPage = bookRepository.findAll(PAGEABLE);
+
         // Then
         assertThat(bookPage.getContent()).isNotEmpty();
         assertThat(bookPage.getContent().get(FIRST_RECORD).getTitle()).isEqualTo(SAMPLE_BOOK_TITLE);
@@ -87,6 +92,7 @@ class BookRepositoryTest {
     void findAll_withSpecificationAndPageable_returnsBooksPage() {
         // When
         Page<Book> bookPage = bookRepository.findAll(SPECIFICATION, PAGEABLE);
+
         // Then
         assertThat(bookPage.getContent()).isNotEmpty();
         assertThat(bookPage.getContent().get(FIRST_RECORD).getAuthor()).isEqualTo(SEARCH_AUTHOR);
@@ -97,8 +103,8 @@ class BookRepositoryTest {
     void findAllByCategories_Id_validCategoryId_returnsBooks() {
         // When
         List<Book> books = bookRepository.findAllByCategories_Id(
-                VALID_SECOND_BOOK_ID, PageRequest.of(SEARCH_PAGE_NUMBER, SEARCH_PAGE_SIZE)
-        );
+                VALID_SECOND_BOOK_ID, PageRequest.of(SEARCH_PAGE_NUMBER, SEARCH_PAGE_SIZE));
+
         // Then
         assertThat(books).isNotEmpty();
         assertThat(books.get(FIRST_RECORD).getTitle()).isEqualTo(SEARCH_TITLE);

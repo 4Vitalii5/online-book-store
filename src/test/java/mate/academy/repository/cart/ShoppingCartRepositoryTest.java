@@ -15,15 +15,16 @@ import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Sql(scripts = "classpath:database/clean-database.sql")
-@Sql(scripts = "classpath:database/users/add-users.sql",
-        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-@Sql(scripts = "classpath:database/shopping-carts/add-shopping-carts.sql",
-        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-@Sql(scripts = "classpath:database/shopping-carts/remove-shopping-carts.sql",
-        executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-@Sql(scripts = "classpath:database/users/remove-users.sql",
-        executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@Sql(scripts = "classpath:database/clean-database.sql",
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+@Sql(scripts = {
+        "classpath:database/users/add-users.sql",
+        "classpath:database/shopping-carts/add-shopping-carts.sql"
+})
+@Sql(scripts = {
+        "classpath:database/shopping-carts/remove-shopping-carts.sql",
+        "classpath:database/users/remove-users.sql"
+}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class ShoppingCartRepositoryTest {
     @Autowired
     private ShoppingCartRepository shoppingCartRepository;
@@ -33,6 +34,7 @@ class ShoppingCartRepositoryTest {
     void findByUserId_validUserId_returnsShoppingCart() {
         // When
         ShoppingCart foundCart = shoppingCartRepository.findByUserId(USER_ID);
+
         // Then
         assertThat(foundCart).isNotNull();
         assertThat(foundCart.getId()).isEqualTo(SHOPPING_CART_ID);
@@ -44,6 +46,7 @@ class ShoppingCartRepositoryTest {
     void findByUserId_noCartForUser_returnsNull() {
         // When
         ShoppingCart foundCart = shoppingCartRepository.findByUserId(INVALID_USER_ID);
+
         // Then
         assertThat(foundCart).isNull();
     }

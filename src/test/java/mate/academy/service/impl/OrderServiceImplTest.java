@@ -76,6 +76,7 @@ class OrderServiceImplTest {
         when(orderMapper.toOrder(SHOPPING_CART)).thenReturn(ORDER);
         when(orderMapper.toDto(ORDER)).thenReturn(ORDER_DTO);
         when(orderRepository.save(ORDER)).thenReturn(ORDER);
+
         // When
         OrderDto actualOrderDto = orderService.createOrder(USER, CREATE_ORDER_REQUEST_DTO);
 

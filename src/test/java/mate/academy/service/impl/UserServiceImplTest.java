@@ -62,8 +62,10 @@ class UserServiceImplTest {
         when(userMapper.toUserResponse(NEW_USER)).thenReturn(USER_RESPONSE_DTO);
         when(roleRepository.findByRole(DEFAULT_ROLE)).thenReturn(Optional.of(ROLE));
         when(passwordEncoder.encode(USER_PASSWORD)).thenReturn(ENCODED_PASSWORD);
+
         // When
         UserResponseDto actualResponseDto = userService.register(USER_REGISTRATION_REQUEST_DTO);
+
         // Then
         assertThat(actualResponseDto).isEqualTo(USER_RESPONSE_DTO);
         verify(userRepository, times(1)).findByEmail(USER_EMAIL);
@@ -79,9 +81,11 @@ class UserServiceImplTest {
     void register_emailExists_throwsRegistrationException() {
         // Given
         when(userRepository.findByEmail(USER_EMAIL)).thenReturn(Optional.of(USER));
+
         // When
         RegistrationException exception = assertThrows(RegistrationException.class,
                 () -> userService.register(USER_REGISTRATION_REQUEST_DTO));
+
         // Then
         assertThat(exception.getMessage()).isEqualTo(DUPLICATE_EMAIL_MESSAGE);
         verify(userRepository, times(1)).findByEmail(USER_EMAIL);
@@ -96,9 +100,11 @@ class UserServiceImplTest {
         // Given
         when(userRepository.findByEmail(USER_EMAIL)).thenReturn(Optional.empty());
         when(roleRepository.findByRole(DEFAULT_ROLE)).thenReturn(Optional.empty());
+
         // When
         RegistrationException exception = assertThrows(RegistrationException.class,
                 () -> userService.register(USER_REGISTRATION_REQUEST_DTO));
+
         // Then
         assertThat(exception.getMessage()).isEqualTo(ROLE_NOT_FOUND_MESSAGE);
         verify(userRepository, times(1)).findByEmail(USER_EMAIL);
