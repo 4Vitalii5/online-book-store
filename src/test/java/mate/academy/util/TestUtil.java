@@ -100,6 +100,7 @@ public class TestUtil {
     public static final Category SECOND_CATEGORY = new Category(
             SECOND_CATEGORY_ID, SECOND_CATEGORY_NAME, SECOND_CATEGORY_DESCRIPTION, false
     );
+
     //Book
     public static final Book SAMPLE_BOOK = new Book(
             SAMPLE_BOOK_ID, SAMPLE_BOOK_TITLE, SAMPLE_BOOK_AUTHOR,
@@ -147,6 +148,7 @@ public class TestUtil {
                     SAMPLE_BOOK.getIsbn(), SAMPLE_BOOK.getPrice(), SAMPLE_BOOK.getDescription(),
                     SAMPLE_BOOK.getCoverImage()
             );
+
     //CategoryDto
     public static final CategoryDto CATEGORY_DTO = new CategoryDto(
             FIRST_CATEGORY.getId(), FIRST_CATEGORY.getName(), FIRST_CATEGORY.getDescription()
@@ -154,6 +156,7 @@ public class TestUtil {
     public static final CategoryDto UPDATED_CATEGORY_DTO = new CategoryDto(
             SECOND_CATEGORY.getId(), SECOND_CATEGORY.getName(), SECOND_CATEGORY.getDescription()
     );
+
     //Pageable
     public static final Pageable PAGEABLE = PageRequest.of(SEARCH_PAGE_NUMBER, SEARCH_PAGE_SIZE);
     public static final Page<Book> BOOK_PAGE = new PageImpl<>(
@@ -162,6 +165,7 @@ public class TestUtil {
     public static final Page<Category> CATEGORY_PAGE = new PageImpl<>(
             List.of(FIRST_CATEGORY), PAGEABLE, 1
     );
+
     //Book request dto
     public static final CreateBookRequestDto CREATE_BOOK_REQUEST_DTO = new CreateBookRequestDto(
             NEW_BOOK_TITLE, NEW_BOOK_AUTHOR, NEW_BOOK_ISBN, NEW_BOOK_PRICE,
@@ -171,6 +175,7 @@ public class TestUtil {
             UPDATED_BOOK_TITLE, UPDATED_BOOK_AUTHOR, UPDATED_BOOK_ISBN, UPDATED_BOOK_PRICE,
             UPDATED_BOOK_DESCRIPTION, UPDATED_BOOK_COVER_IMAGE, UPDATED_BOOK_CATEGORY_IDS
     );
+
     //Category request dto
     public static final CreateCategoryRequestDto CREATE_CATEGORY_REQUEST_DTO =
             new CreateCategoryRequestDto(NEW_CATEGORY_NAME, NEW_CATEGORY_DESCRIPTION);
@@ -180,9 +185,11 @@ public class TestUtil {
             new String[]{SEARCH_TITLE}, new String[]{SEARCH_AUTHOR},
             new String[]{SEARCH_PRICE_MIN, SEARCH_PRICE_MAX}
     );
+
     //Specification
     public static final Specification<Book> SPECIFICATION = (root, query, cb) ->
             cb.equal(root.get(SEARCH_FIELD_AUTHOR), SEARCH_AUTHOR);
+
     //Roles
     public static final Role ROLE = new Role();
 
@@ -230,6 +237,7 @@ public class TestUtil {
             USER_LAST_NAME,
             USER_SHIPPING_ADDRESS
     );
+
     //Order
     public static final CreateOrderRequestDto CREATE_ORDER_REQUEST_DTO = new CreateOrderRequestDto(
             SHIPPING_ADDRESS
@@ -302,6 +310,7 @@ public class TestUtil {
             USER_ID,
             List.of(CART_ITEM_RESPONSE_DTO)
     );
+
     //AuthenticationController
     public static final UserLoginRequestDto USER_LOGIN_REQUEST_DTO =
             new UserLoginRequestDto(VALID_USER_EMAIL, USER_PASSWORD);
